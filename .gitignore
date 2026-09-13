@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+.env*.local
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+.impeccable/config.local.json
+
+# Impeccable design-hook cache (local, regenerated)
+.impeccable/hook.cache.json
