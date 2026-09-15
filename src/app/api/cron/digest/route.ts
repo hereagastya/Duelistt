@@ -19,7 +19,9 @@ const BATCH_SIZE = 100;
 const SEND_HOUR = 7;
 
 /**
- * Runs hourly (see vercel.json) and sends to the users whose local time has
+ * Runs hourly -- scheduled by Supabase pg_cron (migration 0008), not
+ * vercel.json, because Vercel Hobby rejects crons more frequent than daily.
+ * Sends to the users whose local time has
  * just reached 7am. One RPC returns every due row for the whole hour, so the
  * cost is one query plus one HTTP call per 100 recipients -- not a query and a
  * send per user.
