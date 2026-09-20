@@ -11,13 +11,14 @@ export default async function BillingPage() {
   const { profile } = await requireProfile();
   const access = checkAccess(profile);
 
-  // Show the buttons only when they can actually reach a checkout. A Subscribe
-  // button that throws on click is worse than an honest sentence.
+  // Show a button only when it can actually reach a checkout. A Subscribe
+  // button that throws on click is worse than an honest sentence. Monthly and
+  // annual are gated separately: an annual product may not exist yet, and that
+  // must not hide the monthly plan too.
   const configured = Boolean(
-    process.env.DODO_PAYMENTS_API_KEY &&
-      process.env.DODO_PRODUCT_ID_MONTHLY &&
-      process.env.DODO_PRODUCT_ID_ANNUAL,
+    process.env.DODO_PAYMENTS_API_KEY && process.env.DODO_PRODUCT_ID_MONTHLY,
   );
+  const showAnnual = Boolean(process.env.DODO_PRODUCT_ID_ANNUAL);
 
   return (
     <>
@@ -51,12 +52,15 @@ export default async function BillingPage() {
 
       <div className="py-8">
         {configured ? (
-          <CheckoutButtons current={access.allowed && access.reason === "active"} />
+          <CheckoutButtons
+            current={access.allowed && access.reason === "active"}
+            showAnnual={showAnnual}
+          />
         ) : (
           <p className="text-[14px] text-ink-soft">
             Checkout is not configured on this deployment. Set{" "}
-            <code className="text-[13px] text-ink">DODO_PRODUCT_ID_MONTHLY</code> and{" "}
-            <code className="text-[13px] text-ink">DODO_PRODUCT_ID_ANNUAL</code>.
+            <code className="text-[13px] text-ink">DODO_PAYMENTS_API_KEY</code> and{" "}
+            <code className="text-[13px] text-ink">DODO_PRODUCT_ID_MONTHLY</code>.
           </p>
         )}
       </div>

@@ -8,7 +8,13 @@ import { FormError } from "@/components/ui/Field";
 
 const INITIAL: CheckoutState = { error: null };
 
-export function CheckoutButtons({ current }: { current: boolean }) {
+export function CheckoutButtons({
+  current,
+  showAnnual,
+}: {
+  current: boolean;
+  showAnnual: boolean;
+}) {
   const [state, formAction, pending] = useActionState(startCheckout, INITIAL);
 
   return (
@@ -17,9 +23,13 @@ export function CheckoutButtons({ current }: { current: boolean }) {
         <Button type="submit" name="plan" value="monthly" pending={pending}>
           {current ? "Switch to monthly" : "Subscribe monthly"}
         </Button>
-        <Button type="submit" name="plan" value="annual" variant="secondary" pending={pending}>
-          {current ? "Switch to annual" : "Subscribe annually"}
-        </Button>
+        {/* Rendered only when an annual product exists; without one the action
+            would throw on click. */}
+        {showAnnual && (
+          <Button type="submit" name="plan" value="annual" variant="secondary" pending={pending}>
+            {current ? "Switch to annual" : "Subscribe annually"}
+          </Button>
+        )}
       </form>
 
       {state.error && <FormError>{state.error}</FormError>}

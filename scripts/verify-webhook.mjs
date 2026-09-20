@@ -15,8 +15,17 @@ const env = Object.fromEntries(
     }),
 );
 
-const SECRET = env.DODO_PAYMENTS_WEBHOOK_KEY;
-const URL = "http://localhost:3000/api/dodo/webhook";
+// Usage: node scripts/verify-webhook.mjs [url] [secret]
+// Defaults to localhost and the secret in .env.local; pass the deployed URL and
+// the real webhook secret to check production.
+const URL = process.argv[2] || "http://localhost:3000/api/dodo/webhook";
+const SECRET = process.argv[3] || env.DODO_PAYMENTS_WEBHOOK_KEY;
+
+if (!SECRET) {
+  console.error("No webhook secret: pass one as argv[3] or set DODO_PAYMENTS_WEBHOOK_KEY.");
+  process.exit(1);
+}
+console.log(`target: ${URL}\n`);
 
 const payload = JSON.stringify({
   business_id: "biz_test",
