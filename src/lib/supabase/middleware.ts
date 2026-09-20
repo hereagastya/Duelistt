@@ -27,25 +27,31 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  // getUser() revalidates the token with Supabase. getSession() only reads the
-  // cookie, which a client can forge -- do not swap it in here.
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // getClaims() verifies the access token's signature locally against the
+  // project's JWKS (ES256) using WebCrypto, so an ordinary navigation costs no
+  // round trip to Supabase -- which matters because this runs on every request.
+  //
+  // This is NOT getSession(): a forged or tampered cookie fails the signature
+  // check, and an expired token is rejected (the refresh happens inside, and
+  // the rotated cookies are written through setAll above). The only path that
+  // still calls the Auth server is a symmetric-key project or a runtime
+  // without WebCrypto, which auth-js falls back to internally.
+  const { data: claimsData } = await supabase.auth.getClaims();
+  const isSignedIn = Boolean(claimsData?.claims?.sub);
 
   const { pathname } = request.nextUrl;
   const isPublic = PUBLIC_PATHS.some(
     (p) => pathname === p || pathname.startsWith(`${p}/`),
   );
 
-  if (!user && !isPublic) {
+  if (!isSignedIn && !isPublic) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("next", pathname);
     return NextResponse.redirect(url);
   }
 
-  if (user && (pathname === "/login" || pathname === "/signup")) {
+  if (isSignedIn && (pathname === "/login" || pathname === "/signup")) {
     const url = request.nextUrl.clone();
     url.pathname = "/today";
     url.search = "";
