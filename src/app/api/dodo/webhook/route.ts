@@ -97,11 +97,18 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true, ignored: "stale" });
   }
 
+  // Which plan, not just that there is one. Without this the billing page knows
+  // someone is subscribed but not to what, and ends up offering them the plan
+  // they are already on -- a second checkout, and a second charge.
+  const metadataPlan = data.metadata?.plan;
+  const plan = metadataPlan === "monthly" || metadataPlan === "annual" ? metadataPlan : null;
+
   const { error } = await supabase
     .from("profiles")
     .update({
       subscription_status: status,
       subscription_synced_at: eventAt.toISOString(),
+      ...(plan ? { plan } : {}),
       ...(data.subscription_id ? { dodo_subscription_id: data.subscription_id } : {}),
       ...(data.customer?.customer_id ? { dodo_customer_id: data.customer.customer_id } : {}),
     })

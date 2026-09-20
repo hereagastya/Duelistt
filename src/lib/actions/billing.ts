@@ -23,6 +23,15 @@ export async function startCheckout(
 
   const { userId, email, profile } = await requireProfile();
 
+  // Defence in depth, not just a hidden button: a stale page or a hand-posted
+  // form must not be able to open a second checkout for someone who is already
+  // subscribed. Dodo would create a second subscription and charge again, and
+  // the webhook would overwrite dodo_subscription_id, leaving the first one
+  // billing with nothing in this database pointing at it.
+  if (profile.subscription_status === "active") {
+    return { error: "You already have an active subscription. Manage it from the billing portal." };
+  }
+
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   if (!siteUrl) return { error: "Checkout is not configured yet." };
 
@@ -54,4 +63,38 @@ export async function startCheckout(
   // The cast is for typedRoutes, which types redirect() against this app's own
   // routes; this one deliberately leaves the app for Dodo's hosted checkout.
   redirect(checkoutUrl as Route);
+}
+
+export type PortalState = { error: string | null };
+
+/**
+ * Sends an existing subscriber to Dodo's customer portal, where cancelling and
+ * changing a payment method belong. This is what an active subscriber gets
+ * instead of a checkout button.
+ */
+export async function openCustomerPortal(
+  _prev: PortalState,
+  _formData: FormData,
+): Promise<PortalState> {
+  const { profile } = await requireProfile();
+
+  if (!profile.dodo_customer_id) {
+    return { error: "There is no billing account for this user yet." };
+  }
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  let link: string;
+
+  try {
+    const session = await dodoClient().customers.customerPortal.create(
+      profile.dodo_customer_id,
+      siteUrl ? { return_url: `${siteUrl}/billing` } : undefined,
+    );
+    link = session.link;
+  } catch (cause) {
+    console.error("[billing] customer portal session failed", cause);
+    return { error: "Could not open the billing portal. Try again in a moment." };
+  }
+
+  redirect(link as Route);
 }

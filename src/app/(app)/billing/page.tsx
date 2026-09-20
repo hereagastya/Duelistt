@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { CheckoutButtons } from "@/components/billing/CheckoutButtons";
+import { ManageSubscription } from "@/components/billing/ManageSubscription";
 import { requireProfile } from "@/lib/actions/profile";
 import { checkAccess } from "@/lib/billing/gate";
 
@@ -51,11 +52,13 @@ export default async function BillingPage() {
       </div>
 
       <div className="py-8">
-        {configured ? (
-          <CheckoutButtons
-            current={access.allowed && access.reason === "active"}
-            showAnnual={showAnnual}
-          />
+        {access.allowed && access.reason === "active" ? (
+          // An active subscriber is never shown a checkout button: the only
+          // product configured is the one they already pay for, so "switching"
+          // to it would start a second subscription.
+          <ManageSubscription plan={profile.plan} />
+        ) : configured ? (
+          <CheckoutButtons showAnnual={showAnnual} />
         ) : (
           <p className="text-[14px] text-ink-soft">
             Checkout is not configured on this deployment. Set{" "}
