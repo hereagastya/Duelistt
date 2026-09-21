@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { LoginForm } from "./LoginForm";
 
-export const metadata = { title: "Sign in · FollowUp" };
+export const metadata = { title: "Sign in · Duelistt" };
 
 export default async function LoginPage({
   searchParams,

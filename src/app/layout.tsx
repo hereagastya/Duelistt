@@ -11,7 +11,7 @@ const plex = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "FollowUp",
+  title: "Duelistt",
   description: "Log who you contacted. Find out who needs a follow-up today.",
 };
 

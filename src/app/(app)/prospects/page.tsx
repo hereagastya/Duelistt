@@ -15,7 +15,7 @@ import {
   type ProspectStatus,
 } from "@/lib/types";
 
-export const metadata = { title: "All prospects · FollowUp" };
+export const metadata = { title: "All prospects · Duelistt" };
 export const dynamic = "force-dynamic";
 
 type Search = { status?: string; channel?: string; q?: string };

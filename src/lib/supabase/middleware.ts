@@ -1,7 +1,13 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PUBLIC_PATHS = ["/login", "/signup", "/auth", "/api/dodo", "/api/cron"];
+// "/" is the public landing page. The check below is exact-match or a "/x/"
+// prefix, so listing "/" does not make every route public: "/today" is neither
+// equal to "/" nor does it start with "//".
+const PUBLIC_PATHS = ["/", "/login", "/signup", "/auth", "/api/dodo", "/api/cron"];
+
+// Signed in, these have nothing to offer: send them to the app instead.
+const SIGNED_IN_REDIRECTS = ["/", "/login", "/signup"];
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -51,7 +57,7 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (isSignedIn && (pathname === "/login" || pathname === "/signup")) {
+  if (isSignedIn && SIGNED_IN_REDIRECTS.includes(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = "/today";
     url.search = "";

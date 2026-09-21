@@ -5,7 +5,7 @@ import { ManageSubscription } from "@/components/billing/ManageSubscription";
 import { requireProfile } from "@/lib/actions/profile";
 import { checkAccess } from "@/lib/billing/gate";
 
-export const metadata = { title: "Subscription · FollowUp" };
+export const metadata = { title: "Subscription · Duelistt" };
 export const dynamic = "force-dynamic";
 
 export default async function BillingPage() {

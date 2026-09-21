@@ -4,7 +4,7 @@ import { SettingsForm } from "@/components/settings/SettingsForm";
 import { requireProfile } from "@/lib/actions/profile";
 import { checkAccess } from "@/lib/billing/gate";
 
-export const metadata = { title: "Settings · FollowUp" };
+export const metadata = { title: "Settings · Duelistt" };
 export const dynamic = "force-dynamic";
 
 /**

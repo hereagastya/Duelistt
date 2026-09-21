@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { SignUpForm } from "./SignUpForm";
 
-export const metadata = { title: "Start a trial · FollowUp" };
+export const metadata = { title: "Start a trial · Duelistt" };
 
 export default function SignUpPage() {
   return (

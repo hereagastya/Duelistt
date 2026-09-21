@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     .eq("id", id)
     .maybeSingle<{ name: string }>();
 
-  return { title: data ? `${data.name} · FollowUp` : "Prospect · FollowUp" };
+  return { title: data ? `${data.name} · Duelistt` : "Prospect · Duelistt" };
 }
 
 export default async function ProspectDetailPage({

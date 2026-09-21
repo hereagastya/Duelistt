@@ -108,9 +108,19 @@ only). These are refusals to preserve, not gaps to fill.
 
 ## Brand Commitments
 
-Working name: FollowUp. The name is not final and no logo, wordmark, palette,
-or typographic commitment exists yet. Nothing here is binding on future naming
-or identity work.
+Name: Duelistt, live at duelistt.com. The app and the landing page now share
+these commitments:
+
+- IBM Plex Sans throughout, set tight at display sizes.
+- Two grounds for one world: the app is warm paper with ink and a rust accent;
+  the landing page is the night version of it, warm near-black with amber as
+  the single accent. Ruled rows, never cards, carry lists in both.
+- The positioning line, used verbatim: "Not a CRM. No pipelines, no deal
+  stages, no dashboard to babysit. Just the nag you actually need."
+- The name is explained once, at the end of the landing page: "Every lead's a
+  duel. Don't lose it by going quiet first." It never leads.
+
+No logo mark exists yet.
 
 ## Evidence on Hand
 

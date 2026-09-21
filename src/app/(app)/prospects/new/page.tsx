@@ -2,7 +2,7 @@ import { NewProspectForm } from "@/components/prospects/NewProspectForm";
 import { requireProfile } from "@/lib/actions/profile";
 import { todayIn } from "@/lib/date";
 
-export const metadata = { title: "Add prospect · FollowUp" };
+export const metadata = { title: "Add prospect · Duelistt" };
 
 export default async function NewProspectPage() {
   const { profile } = await requireProfile();

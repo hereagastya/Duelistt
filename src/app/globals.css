@@ -29,6 +29,23 @@
 
   --radius-sm: 3px;
   --radius-md: 5px;
+
+  /*
+    Landing-page palette: the night version of the same ledger world. Warm
+    near-black rather than neutral grey, and amber as the only accent -- a
+    cousin of the app's rust, so the two read as one product.
+    Scoped to the marketing routes; the app keeps its paper and ink.
+  */
+  --color-night: oklch(16% 0.012 60);
+  --color-night-raised: oklch(20.5% 0.012 60);
+  --color-night-rule: oklch(31% 0.012 60);
+
+  --color-chalk: oklch(95% 0.008 85);
+  --color-chalk-soft: oklch(78% 0.012 70);
+  --color-chalk-faint: oklch(64% 0.014 70);
+
+  --color-ember: oklch(78% 0.145 68);
+  --color-ember-deep: oklch(70% 0.15 62);
 }
 
 @layer base {
