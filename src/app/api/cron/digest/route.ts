@@ -16,14 +16,15 @@ export const maxDuration = 60;
 
 // Resend accepts up to 100 messages per batch call.
 const BATCH_SIZE = 100;
-const SEND_HOUR = 7;
 
 /**
  * Runs hourly -- scheduled by Supabase pg_cron (migration 0008), not
  * vercel.json, because Vercel Hobby rejects crons more frequent than daily.
- * Sends to the users whose local time has
- * just reached 7am. One RPC returns every due row for the whole hour, so the
- * cost is one query plus one HTTP call per 100 recipients -- not a query and a
+ *
+ * Every hour this asks the database "whose chosen hour is it right now, in
+ * their own timezone?" -- the hour is a per-user setting (migration 0009), not
+ * a constant here. One RPC returns every due row for the whole hour, so the
+ * cost is one query plus one HTTP call per 100 recipients, not a query and a
  * send per user.
  */
 export async function GET(request: NextRequest) {
@@ -48,14 +49,17 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "not configured" }, { status: 500 });
   }
 
-  // `?hour=` lets the run be triggered on demand instead of waiting for a
-  // user's local 7am -- needed to test delivery end to end, and to replay an
-  // hour that failed. It sits behind the same bearer secret as the rest of the
-  // route, so it grants nothing an authorised caller does not already have.
+  // Omitted (the normal hourly run): each user is matched against their own
+  // digest_hour in their own timezone.
+  //
+  // `?hour=N`: an override for testing and replay -- it sends to everyone whose
+  // chosen hour is N, without waiting for that hour to come round. It sits
+  // behind the same bearer secret as the rest of the route, so it grants
+  // nothing an authorised caller does not already have.
   const hourParam = request.nextUrl.searchParams.get("hour");
-  const targetHour = hourParam === null ? SEND_HOUR : Number(hourParam);
+  const targetHour = hourParam === null ? null : Number(hourParam);
 
-  if (!Number.isInteger(targetHour) || targetHour < 0 || targetHour > 23) {
+  if (targetHour !== null && (!Number.isInteger(targetHour) || targetHour < 0 || targetHour > 23)) {
     return NextResponse.json({ error: "hour must be 0-23" }, { status: 400 });
   }
 

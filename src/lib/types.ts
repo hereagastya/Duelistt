@@ -100,6 +100,8 @@ export type Profile = {
   timezone: string;
   default_follow_up_interval: number;
   digest_enabled: boolean;
+  /** Local hour, 0-23, at which this user's digest is sent. */
+  digest_hour: number;
   created_at: string;
   updated_at: string;
 };

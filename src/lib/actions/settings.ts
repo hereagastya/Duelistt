@@ -16,6 +16,7 @@ export async function updateSettings(
   const interval = Number(formData.get("default_follow_up_interval"));
   const timezone = String(formData.get("timezone") ?? "").trim();
   const digestEnabled = formData.get("digest_enabled") === "on";
+  const digestHour = Number(formData.get("digest_hour"));
 
   if (!Number.isInteger(interval) || interval < 1 || interval > 365) {
     return { error: "Follow-up interval must be between 1 and 365 days." };
@@ -23,10 +24,13 @@ export async function updateSettings(
   if (!timezone) {
     return { error: "Choose a timezone." };
   }
+  if (!Number.isInteger(digestHour) || digestHour < 0 || digestHour > 23) {
+    return { error: "Choose an hour between 00:00 and 23:00 for the digest." };
+  }
 
   const supabase = await createClient();
 
-  // These three columns are the only ones `authenticated` holds an UPDATE grant
+  // These four columns are the only ones `authenticated` holds an UPDATE grant
   // on. Billing columns are the webhook's to write, not the user's.
   const { error } = await supabase
     .from("profiles")
@@ -34,6 +38,7 @@ export async function updateSettings(
       default_follow_up_interval: interval,
       timezone,
       digest_enabled: digestEnabled,
+      digest_hour: digestHour,
     })
     .eq("id", userId);
 

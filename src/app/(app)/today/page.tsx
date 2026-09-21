@@ -108,7 +108,7 @@ async function EmptyToday() {
           <p className="text-[15px] text-ink">No prospects yet.</p>
           <p className="mt-1 max-w-[46ch] text-[14px] text-ink-soft">
             Add the first person you have reached out to. Once a follow-up date arrives, they
-            show up here — and in your 7am digest.
+            show up here — and in your daily digest.
           </p>
           <Link
             href="/prospects/new"

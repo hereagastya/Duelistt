@@ -9,6 +9,8 @@ import type { Profile } from "@/lib/types";
 
 const INITIAL: SettingsState = { error: null };
 
+const HOURS = Array.from({ length: 24 }, (_, hour) => hour);
+
 export function SettingsForm({ profile, zones }: { profile: Profile; zones: string[] }) {
   const [state, formAction, pending] = useActionState(updateSettings, INITIAL);
 
@@ -59,10 +61,29 @@ export function SettingsForm({ profile, zones }: { profile: Profile; zones: stri
           <span>
             <span className="block text-[14px] text-ink">Send me the daily digest</span>
             <span className="mt-0.5 block text-[13px] text-ink-faint">
-              7am your time, and only on days you actually have follow-ups due.
+              Only on days you actually have follow-ups due.
             </span>
           </span>
         </label>
+
+        <div className="mt-5 max-w-[12rem]">
+          <Label htmlFor="digest_hour">Send at</Label>
+          <Select
+            id="digest_hour"
+            name="digest_hour"
+            defaultValue={String(profile.digest_hour)}
+            className="tnum"
+          >
+            {HOURS.map((hour) => (
+              <option key={hour} value={hour}>
+                {String(hour).padStart(2, "0")}:00
+              </option>
+            ))}
+          </Select>
+          <p className="mt-1.5 text-[13px] text-ink-faint">
+            Your local time, in the timezone above.
+          </p>
+        </div>
       </div>
 
       {state.error && <FormError>{state.error}</FormError>}
