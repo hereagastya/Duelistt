@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { SettingsForm } from "@/components/settings/SettingsForm";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { requireProfile } from "@/lib/actions/profile";
 import { checkAccess } from "@/lib/billing/gate";
 
@@ -40,27 +41,27 @@ export default async function SettingsPage() {
 
   return (
     <>
-      <h1 className="pt-10 pb-5 text-[22px] font-semibold tracking-[-0.02em]">Settings</h1>
+      <PageHeader title="Settings" />
 
       <SettingsForm profile={profile} zones={timezoneOptions(profile.timezone)} />
 
-      <section className="mt-10 border-t border-rule pt-6">
-        <h2 className="text-[15px] font-medium text-ink-soft">Account</h2>
+      <section className="mt-5 rounded-xl border border-rule bg-surface p-5 shadow-xs sm:p-6">
+        <h2 className="text-[14px] font-medium text-ink">Account</h2>
 
-        <dl className="mt-4 flex flex-wrap gap-x-10 gap-y-4">
+        <dl className="mt-4 flex flex-wrap gap-x-12 gap-y-4">
           <div>
-            <dt className="text-[13px] text-ink-faint">Signed in as</dt>
-            <dd className="mt-0.5 text-[14px] text-ink">{email}</dd>
+            <dt className="text-[12px] text-ink-faint">Signed in as</dt>
+            <dd className="mt-1 text-[14px] text-ink">{email}</dd>
           </div>
           <div>
-            <dt className="text-[13px] text-ink-faint">Subscription</dt>
-            <dd className="mt-0.5 text-[14px] text-ink">{subscriptionLine}</dd>
+            <dt className="text-[12px] text-ink-faint">Subscription</dt>
+            <dd className="mt-1 text-[14px] text-ink">{subscriptionLine}</dd>
           </div>
         </dl>
 
         <Link
           href="/billing"
-          className="mt-5 inline-block text-[14px] font-medium text-accent underline underline-offset-[3px] hover:text-accent-hover"
+          className="mt-5 inline-block text-[14px] font-medium text-accent-ink underline decoration-accent-line underline-offset-[3px] hover:decoration-accent-ink"
         >
           Manage subscription
         </Link>

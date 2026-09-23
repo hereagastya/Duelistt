@@ -81,7 +81,7 @@ export function LogTouchModal({
       onClick={(e) => {
         if (e.target === dialogRef.current) close();
       }}
-      className="m-auto w-[min(30rem,calc(100vw-2rem))] rounded-md border border-rule-strong bg-paper p-0 text-ink shadow-[0_16px_40px_-12px_rgba(60,42,32,0.24)] backdrop:bg-black/25"
+      className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-xl border border-rule bg-surface p-0 text-ink shadow-lg backdrop:bg-ink/35 backdrop:backdrop-blur-[2px]"
     >
       <form action={formAction} className="flex flex-col">
         <input type="hidden" name="prospect_id" value={prospect.id} />
@@ -90,12 +90,12 @@ export function LogTouchModal({
           <input type="hidden" name="next_follow_up_date" value={followUpDate} />
         )}
 
-        <div className="border-b border-rule px-5 py-4">
-          <h2 className="text-[16px] font-semibold tracking-[-0.01em]">Log a touch</h2>
+        <div className="px-6 pt-5 pb-4">
+          <h2 className="text-[17px] font-semibold tracking-[-0.02em]">Log a touch</h2>
           <p className="mt-0.5 text-[14px] text-ink-soft">{prospect.name}</p>
         </div>
 
-        <div className="flex flex-col gap-4 px-5 py-5">
+        <div className="flex flex-col gap-4 border-t border-rule px-6 py-5">
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label htmlFor="touch_date">Date</Label>
@@ -150,7 +150,7 @@ export function LogTouchModal({
           </div>
 
           <fieldset className="border-t border-rule pt-4">
-            <legend className="mb-2.5 text-[13px] font-medium text-ink-soft">Then</legend>
+            <legend className="mb-2.5 text-[13px] font-medium text-ink">Then</legend>
 
             <div className="flex flex-wrap gap-1.5">
               {DISPOSITIONS.map((d) => (
@@ -180,7 +180,7 @@ export function LogTouchModal({
                   value={followUpDate}
                   min={today}
                   onChange={(e) => setFollowUpDate(e.target.value)}
-                  className="tnum rounded-sm border border-rule bg-paper px-2 py-1 text-[13px] text-ink-soft transition-colors duration-150 hover:border-ink-faint focus:border-accent focus:outline-none"
+                  className="tnum h-8 rounded-md border border-rule-strong bg-surface px-2.5 text-[13px] text-ink-soft shadow-xs transition-[border-color,box-shadow] duration-150 hover:border-ink-faint/60 focus:border-accent-line focus:ring-[3px] focus:ring-accent/30 focus:outline-none"
                 />
               </div>
             ) : (
@@ -193,7 +193,7 @@ export function LogTouchModal({
           {state.error && <FormError>{state.error}</FormError>}
         </div>
 
-        <div className="flex justify-end gap-2 border-t border-rule bg-paper-sunk px-5 py-3.5">
+        <div className="flex justify-end gap-2 rounded-b-xl border-t border-rule bg-paper px-6 py-4">
           <Button type="button" variant="ghost" onClick={close}>
             Cancel
           </Button>
@@ -226,16 +226,18 @@ function Chip({
   solid?: boolean;
 }) {
   const activeStyle = solid
-    ? "border-accent bg-accent text-paper"
-    : "border-accent bg-accent-wash text-ink";
+    ? "border-accent bg-accent text-ink shadow-xs"
+    : "border-accent-line bg-accent-wash text-ink";
 
   return (
     <button
       type="button"
       onClick={onSelect}
       aria-pressed={active}
-      className={`rounded-sm border px-2.5 py-1 text-[13px] transition-colors duration-150 ${
-        active ? activeStyle : "border-rule text-ink-soft hover:border-ink-faint hover:text-ink"
+      className={`h-8 rounded-md border px-2.5 text-[13px] font-medium transition-colors duration-150 ${
+        active
+          ? activeStyle
+          : "border-rule-strong bg-surface text-ink-soft shadow-xs hover:border-ink-faint/60 hover:text-ink"
       }`}
     >
       {label}

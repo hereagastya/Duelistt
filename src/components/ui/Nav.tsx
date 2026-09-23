@@ -15,13 +15,16 @@ export function Nav({ email }: { email: string }) {
   const pathname = usePathname();
 
   return (
-    <header className="border-b border-rule">
-      <div className="mx-auto flex w-full max-w-[46rem] items-center justify-between gap-6 px-6 py-4">
-        <nav className="flex items-baseline gap-5">
-          <Link href="/today" className="text-[15px] font-semibold tracking-[-0.02em] text-ink">
+    <header className="sticky top-0 z-30 border-b border-rule bg-paper/85 backdrop-blur-md">
+      <div className="mx-auto flex w-full max-w-[48rem] items-center justify-between gap-6 px-6 py-3">
+        <nav className="flex items-center gap-1">
+          <Link
+            href="/today"
+            className="mr-3 text-[15px] font-semibold tracking-[-0.025em] text-ink"
+          >
             Duelistt
           </Link>
-          <span className="h-4 w-px bg-rule" aria-hidden />
+
           {LINKS.map(({ href, label }) => {
             const active = pathname === href || pathname.startsWith(`${href}/`);
             return (
@@ -29,13 +32,17 @@ export function Nav({ email }: { email: string }) {
                 key={href}
                 href={href}
                 aria-current={active ? "page" : undefined}
-                className={`text-[14px] transition-colors duration-150 ${
-                  active
-                    ? "font-medium text-ink underline decoration-accent decoration-2 underline-offset-[6px]"
-                    : "text-ink-soft hover:text-ink"
+                className={`relative rounded-md px-2.5 py-1.5 text-[14px] transition-colors duration-150 ${
+                  active ? "font-medium text-ink" : "text-ink-soft hover:bg-paper-sunk hover:text-ink"
                 }`}
               >
                 {label}
+                {active && (
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-2.5 -bottom-[13px] h-[2px] rounded-full bg-accent"
+                  />
+                )}
               </Link>
             );
           })}
@@ -45,7 +52,7 @@ export function Nav({ email }: { email: string }) {
           <button
             type="submit"
             title={email}
-            className="text-[13px] text-ink-faint transition-colors duration-150 hover:text-ink"
+            className="rounded-md px-2 py-1.5 text-[13px] text-ink-faint transition-colors duration-150 hover:bg-paper-sunk hover:text-ink"
           >
             Sign out
           </button>

@@ -3,7 +3,9 @@ import { Suspense } from "react";
 
 import { ProspectFilters } from "@/components/prospects/ProspectFilters";
 import { StatusTag } from "@/components/prospects/StatusTag";
+import { buttonClasses } from "@/components/ui/Button";
 import { ChannelIcon } from "@/components/ui/ChannelIcon";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { requireProfile } from "@/lib/actions/profile";
 import { createClient } from "@/lib/supabase/server";
 import { daysBetween, formatDate, todayIn } from "@/lib/date";
@@ -57,43 +59,44 @@ export default async function ProspectsPage({
 
   return (
     <>
-      <div className="flex items-baseline justify-between gap-4 pt-10 pb-5">
-        <h1 className="text-[22px] font-semibold tracking-[-0.02em]">All prospects</h1>
-        <Link
-          href="/prospects/new"
-          className="text-[14px] font-medium text-accent underline underline-offset-[3px] hover:text-accent-hover"
-        >
-          Add prospect
-        </Link>
-      </div>
+      <PageHeader
+        title="All prospects"
+        action={
+          <Link href="/prospects/new" className={buttonClasses("primary", "sm")}>
+            Add prospect
+          </Link>
+        }
+      />
 
       <Suspense fallback={<div className="h-[5.5rem]" />}>
         <ProspectFilters total={prospects.length} />
       </Suspense>
 
       {error ? (
-        <p role="alert" className="border-t border-rule py-6 text-[14px] text-late">
+        <p
+          role="alert"
+          className="rounded-lg border border-late/25 bg-late/[0.06] px-4 py-3 text-[14px] text-late"
+        >
           That list could not be loaded. Reload the page.
         </p>
       ) : prospects.length === 0 ? (
         <Empty filtered={Boolean(status || channel || q)} />
       ) : (
-        <ul className="border-t border-rule">
+        <ul className="-mx-3">
           {prospects.map((p) => {
             const late = p.next_follow_up_date
               ? daysBetween(p.next_follow_up_date, today)
               : null;
 
             return (
-              <li key={p.id} className="border-b border-rule">
+              <li key={p.id} className="px-3">
                 <Link
                   href={`/prospects/${p.id}`}
-                  className="group flex items-baseline gap-4 py-3.5"
+                  className="group -mx-3 flex items-center gap-3 rounded-lg px-3 py-3 transition-colors duration-150 hover:bg-paper-sunk"
                 >
-                  <ChannelIcon
-                    channel={p.channel}
-                    className="translate-y-[3px] text-ink-faint transition-colors duration-150 group-hover:text-accent"
-                  />
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-paper-sunk text-ink-faint transition-colors duration-150 group-hover:bg-surface group-hover:text-accent-ink">
+                    <ChannelIcon channel={p.channel} />
+                  </span>
 
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-[15px] font-medium text-ink">
@@ -104,7 +107,9 @@ export default async function ProspectsPage({
                     </span>
                   </span>
 
-                  <StatusTag status={p.status} />
+                  <span className="hidden shrink-0 sm:block">
+                    <StatusTag status={p.status} />
+                  </span>
 
                   <span className="tnum w-[6.5rem] shrink-0 text-right text-[13px] text-ink-faint">
                     {p.next_follow_up_date === null ? (
@@ -129,19 +134,16 @@ export default async function ProspectsPage({
 
 function Empty({ filtered }: { filtered: boolean }) {
   return (
-    <div className="border-t border-rule py-16">
+    <div className="rounded-xl border border-rule bg-surface px-8 py-14 text-center shadow-xs">
       {filtered ? (
         <>
-          <p className="text-[15px] text-ink">No prospects match those filters.</p>
-          <p className="mt-1 text-[14px] text-ink-soft">Widen the search or clear them.</p>
+          <p className="text-[16px] font-medium text-ink">No prospects match those filters.</p>
+          <p className="mt-1.5 text-[14px] text-ink-soft">Widen the search or clear them.</p>
         </>
       ) : (
         <>
-          <p className="text-[15px] text-ink">No prospects yet.</p>
-          <Link
-            href="/prospects/new"
-            className="mt-5 inline-block rounded-sm bg-accent px-3.5 py-2 text-[14px] font-medium text-paper transition-colors duration-150 hover:bg-accent-hover"
-          >
+          <p className="text-[16px] font-medium text-ink">No prospects yet.</p>
+          <Link href="/prospects/new" className={`${buttonClasses()} mt-7`}>
             Add your first prospect
           </Link>
         </>

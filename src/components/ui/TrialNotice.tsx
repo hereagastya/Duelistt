@@ -13,13 +13,20 @@ export function TrialNotice({ access }: { access: Access }) {
     : "Your trial has ended. Your history is safe — subscribe to log new touches.";
 
   return (
-    <div className="border-b border-rule bg-accent-wash">
-      <p className="mx-auto flex w-full max-w-[46rem] items-baseline gap-2 px-6 py-2.5 text-[13px] text-ink">
+    <div className="border-b border-accent-line/60 bg-accent-wash">
+      <div className="mx-auto flex w-full max-w-[48rem] flex-wrap items-center gap-x-2 gap-y-1 px-6 py-2.5 text-[13px] text-ink">
+        <span
+          aria-hidden
+          className="mr-1 inline-block size-1.5 shrink-0 rounded-full bg-accent"
+        />
         {message}
-        <Link href="/billing" className="font-medium text-accent underline">
+        <Link
+          href="/billing"
+          className="font-medium text-accent-ink underline decoration-accent-line underline-offset-[3px] hover:decoration-accent-ink"
+        >
           Subscribe
         </Link>
-      </p>
+      </div>
     </div>
   );
 }

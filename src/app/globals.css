@@ -1,41 +1,55 @@
 @import "tailwindcss";
 
 /*
-  Ledger. Warm paper, ink, hairline rules. No cards as page structure.
-  Light-first by decision, not by default: this is opened in morning daylight
-  for three minutes, not lived in at night.
+  Duelistt runs two grounds for one world.
+
+  The app is daylight: near-white paper, white surfaces lifted by soft
+  elevation rather than hard 1px boxes, ink for text, and the brand amber used
+  deliberately -- primary buttons, the active nav mark, selected state, focus.
+  Amber is a fill with dark text on it, never pale text on amber.
+
+  The landing page is the same world at night: warm near-black, amber accent.
 */
 
 @theme {
-  --color-paper: oklch(98.6% 0.005 85);
-  --color-paper-sunk: oklch(96.4% 0.008 85);
-  --color-rule: oklch(89% 0.008 85);
-  --color-rule-strong: oklch(80% 0.01 85);
+  /* --- App surfaces ------------------------------------------------------ */
+  --color-paper: oklch(98.8% 0.003 80); /* page ground */
+  --color-surface: oklch(100% 0 0); /* raised: inputs, modals, panels */
+  --color-paper-sunk: oklch(97% 0.004 80); /* hover, inset rows */
+  --color-rule: oklch(93.5% 0.004 80); /* hairlines between rows */
+  --color-rule-strong: oklch(89.5% 0.005 80); /* control borders */
 
-  --color-ink: oklch(24% 0.012 60);
-  --color-ink-soft: oklch(46% 0.012 60);
-  --color-ink-faint: oklch(62% 0.012 60);
+  /* --- Ink --------------------------------------------------------------- */
+  --color-ink: oklch(25% 0.008 60);
+  --color-ink-soft: oklch(52% 0.009 60);
+  --color-ink-faint: oklch(67% 0.01 65);
 
-  /* One accent. Rust, because every CRM in the category is blue. */
-  --color-accent: oklch(52% 0.145 42);
-  --color-accent-hover: oklch(46% 0.15 42);
-  --color-accent-wash: oklch(95.5% 0.022 42);
+  /* --- Brand amber ------------------------------------------------------- */
+  --color-accent: oklch(79% 0.145 70); /* fills; always carries ink text */
+  --color-accent-hover: oklch(74% 0.152 67);
+  --color-accent-ink: oklch(47% 0.115 58); /* accent text and links on white */
+  --color-accent-wash: oklch(96.5% 0.035 80); /* selected chips, notices */
+  --color-accent-line: oklch(87% 0.085 74); /* accent borders */
 
-  /* Overdue severity. Carried mostly by weight; colour only at the tail. */
-  --color-late: oklch(56% 0.16 32);
-  --color-settled: oklch(48% 0.09 155);
+  /* --- Semantic ---------------------------------------------------------- */
+  --color-late: oklch(55% 0.17 28);
+  --color-settled: oklch(52% 0.11 155);
 
   --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
 
-  --radius-sm: 3px;
-  --radius-md: 5px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
 
-  /*
-    Landing-page palette: the night version of the same ledger world. Warm
-    near-black rather than neutral grey, and amber as the only accent -- a
-    cousin of the app's rust, so the two read as one product.
-    Scoped to the marketing routes; the app keeps its paper and ink.
-  */
+  /* Soft, warm-tinted elevation. Nothing here is a hard grey box. */
+  --shadow-xs: 0 1px 2px oklch(25% 0.008 60 / 0.06);
+  --shadow-sm:
+    0 1px 2px oklch(25% 0.008 60 / 0.05), 0 2px 6px -2px oklch(25% 0.008 60 / 0.06);
+  --shadow-md:
+    0 2px 4px -2px oklch(25% 0.008 60 / 0.05), 0 10px 24px -8px oklch(25% 0.008 60 / 0.12);
+  --shadow-lg: 0 32px 64px -28px oklch(25% 0.008 60 / 0.28);
+
+  /* --- Landing palette: the night version of the same world -------------- */
   --color-night: oklch(16% 0.012 60);
   --color-night-raised: oklch(20.5% 0.012 60);
   --color-night-rule: oklch(31% 0.012 60);
@@ -58,27 +72,35 @@
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: 15px;
-    line-height: 1.55;
+    line-height: 1.5;
+    letter-spacing: -0.006em;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
-  /* Browser surfaces belong to the design too. */
+  /* Headings carry the hierarchy: weight and tracking, not just size. */
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.022em;
+  }
+
+  :root {
+    accent-color: var(--color-accent-ink);
+    caret-color: var(--color-accent-ink);
+    color-scheme: light;
+  }
+
   ::selection {
     background: var(--color-accent-wash);
     color: var(--color-ink);
   }
 
-  :root {
-    accent-color: var(--color-accent);
-    caret-color: var(--color-accent);
-    color-scheme: light;
-  }
-
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: 3px;
   }
 
   /* Every number in this product is a quantity in a column. */
@@ -92,7 +114,66 @@
     text-decoration-thickness: from-font;
   }
 
+  /* --- Landing scope ----------------------------------------------------- */
+  .night {
+    color-scheme: dark;
+  }
+
+  .night ::selection {
+    background: var(--color-ember);
+    color: var(--color-night);
+  }
+
+  .night :focus-visible {
+    outline-color: var(--color-ember);
+  }
+
+  /*
+    Landing ground: a very slight warm lift from the top, plus a fine grain so
+    large dark areas do not read as flat fill. No mesh, no colour ramp.
+  */
+  .night-ground {
+    background-color: var(--color-night);
+    background-image: radial-gradient(
+      120% 70% at 50% -10%,
+      oklch(23% 0.018 62) 0%,
+      oklch(16% 0.012 60) 60%
+    );
+  }
+
+  .grain::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  /* Scroll reveal: quick and confident, no bounce, no overshoot. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 520ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
   @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
     *,
     *::before,
     *::after {

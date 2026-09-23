@@ -1,4 +1,5 @@
 import { NewProspectForm } from "@/components/prospects/NewProspectForm";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { requireProfile } from "@/lib/actions/profile";
 import { todayIn } from "@/lib/date";
 
@@ -9,7 +10,10 @@ export default async function NewProspectPage() {
 
   return (
     <>
-      <h1 className="pt-10 pb-5 text-[22px] font-semibold tracking-[-0.02em]">Add prospect</h1>
+      <PageHeader
+        title="Add prospect"
+        description="Someone you have already contacted, and want to chase."
+      />
       <NewProspectForm
         today={todayIn(profile.timezone)}
         timezone={profile.timezone}

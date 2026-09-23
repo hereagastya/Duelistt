@@ -50,49 +50,51 @@ export function NewProspectForm({
   ];
 
   return (
-    <form action={formAction} className="flex flex-col gap-5 border-t border-rule pt-6">
+    <form action={formAction} className="flex flex-col gap-5">
       <input type="hidden" name="next_follow_up_date" value={followUpDate} />
 
-      <div>
-        <Label htmlFor="name">Name</Label>
-        <Input id="name" name="name" required autoFocus placeholder="Priya Raman" />
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-[9rem_1fr]">
+      <section className="rounded-xl border border-rule bg-surface p-5 shadow-xs sm:p-6">
         <div>
-          <Label htmlFor="channel">Channel</Label>
-          <Select
-            id="channel"
-            name="channel"
-            value={channel}
-            onChange={(e) => setChannel(e.target.value as Channel)}
-          >
-            {CHANNELS.map((c) => (
-              <option key={c} value={c}>
-                {CHANNEL_LABELS[c]}
-              </option>
-            ))}
-          </Select>
+          <Label htmlFor="name">Name</Label>
+          <Input id="name" name="name" required autoFocus placeholder="Priya Raman" />
         </div>
 
-        <div>
-          <Label htmlFor="contact_info">Where to reach them</Label>
-          <Input
-            id="contact_info"
-            name="contact_info"
-            required
-            placeholder={CONTACT_PLACEHOLDER[channel]}
-          />
-        </div>
-      </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-[9.5rem_1fr]">
+          <div>
+            <Label htmlFor="channel">Channel</Label>
+            <Select
+              id="channel"
+              name="channel"
+              value={channel}
+              onChange={(e) => setChannel(e.target.value as Channel)}
+            >
+              {CHANNELS.map((c) => (
+                <option key={c} value={c}>
+                  {CHANNEL_LABELS[c]}
+                </option>
+              ))}
+            </Select>
+          </div>
 
-      <div className="border-t border-rule pt-5">
-        <p className="mb-4 text-[13px] font-medium text-ink-soft">
-          The first touch
-          <span className="ml-2 font-normal text-ink-faint">
+          <div>
+            <Label htmlFor="contact_info">Where to reach them</Label>
+            <Input
+              id="contact_info"
+              name="contact_info"
+              required
+              placeholder={CONTACT_PLACEHOLDER[channel]}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="rounded-xl border border-rule bg-surface p-5 shadow-xs sm:p-6">
+        <div className="mb-4">
+          <h2 className="text-[14px] font-medium text-ink">The first touch</h2>
+          <p className="mt-0.5 text-[13px] text-ink-faint">
             You have already contacted them — this records it.
-          </span>
-        </p>
+          </p>
+        </div>
 
         <div className="flex flex-col gap-4">
           <div>
@@ -118,22 +120,22 @@ export function NewProspectForm({
             />
           </div>
         </div>
-      </div>
+      </section>
 
-      <fieldset className="border-t border-rule pt-5">
-        <legend className="mb-2.5 text-[13px] font-medium text-ink-soft">Follow up</legend>
+      <fieldset className="rounded-xl border border-rule bg-surface p-5 shadow-xs sm:p-6">
+        <legend className="px-1 text-[14px] font-medium text-ink">Follow up</legend>
 
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className="mt-1 flex flex-wrap items-center gap-1.5">
           {presets.map((p) => (
             <button
               key={p.days}
               type="button"
               onClick={() => setFollowUpDate(p.date)}
               aria-pressed={followUpDate === p.date}
-              className={`rounded-sm border px-2.5 py-1 text-[13px] transition-colors duration-150 ${
+              className={`h-8 rounded-md border px-2.5 text-[13px] font-medium transition-colors duration-150 ${
                 followUpDate === p.date
-                  ? "border-accent bg-accent-wash text-ink"
-                  : "border-rule text-ink-soft hover:border-ink-faint hover:text-ink"
+                  ? "border-accent-line bg-accent-wash text-ink"
+                  : "border-rule-strong bg-surface text-ink-soft shadow-xs hover:border-ink-faint/60 hover:text-ink"
               }`}
             >
               {p.label}
@@ -145,18 +147,21 @@ export function NewProspectForm({
             value={followUpDate}
             min={today}
             onChange={(e) => setFollowUpDate(e.target.value)}
-            className="tnum rounded-sm border border-rule bg-paper px-2 py-1 text-[13px] text-ink-soft transition-colors duration-150 hover:border-ink-faint focus:border-accent focus:outline-none"
+            className="tnum h-8 rounded-md border border-rule-strong bg-surface px-2.5 text-[13px] text-ink-soft shadow-xs transition-[border-color,box-shadow] duration-150 hover:border-ink-faint/60 focus:border-accent-line focus:ring-[3px] focus:ring-accent/30 focus:outline-none"
           />
         </div>
       </fieldset>
 
       {state.error && <FormError>{state.error}</FormError>}
 
-      <div className="flex items-center gap-3 border-t border-rule pt-5">
+      <div className="flex items-center gap-3">
         <Button type="submit" pending={pending}>
           {pending ? "Saving" : "Add prospect"}
         </Button>
-        <Link href="/today" className="text-[14px] text-ink-soft hover:text-ink">
+        <Link
+          href="/today"
+          className="rounded-md px-2 py-1 text-[14px] text-ink-soft transition-colors duration-150 hover:text-ink"
+        >
           Cancel
         </Link>
       </div>

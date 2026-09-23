@@ -21,42 +21,39 @@ export function TodayList({ prospects, today, timezone, defaultInterval }: Props
 
   return (
     <>
-      <ul className="border-t border-rule">
+      <ul className="-mx-3">
         {prospects.map((p) => {
           const late = p.next_follow_up_date ? daysBetween(p.next_follow_up_date, today) : 0;
 
           return (
-            <li key={p.id} className="border-b border-rule">
-              <div className="group flex items-baseline gap-4 py-3.5">
+            <li key={p.id} className="px-3">
+              <div className="group -mx-3 flex items-center gap-3 rounded-lg px-3 py-3 transition-colors duration-150 hover:bg-paper-sunk">
                 <button
                   type="button"
                   onClick={() => setOpenId(p.id)}
-                  className="flex min-w-0 flex-1 items-baseline gap-3 text-left"
+                  className="flex min-w-0 flex-1 items-center gap-3 text-left"
                 >
-                  <ChannelIcon
-                    channel={p.channel}
-                    className="translate-y-[3px] text-ink-faint transition-colors duration-150 group-hover:text-accent"
-                  />
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-paper-sunk text-ink-faint transition-colors duration-150 group-hover:bg-surface group-hover:text-accent-ink">
+                    <ChannelIcon channel={p.channel} />
+                  </span>
 
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-[15px] font-medium text-ink">
                       {p.name}
                     </span>
-                    {p.last_note ? (
-                      <span className="mt-0.5 block truncate text-[13px] text-ink-soft">
-                        {p.last_note}
-                      </span>
-                    ) : (
-                      <span className="mt-0.5 block text-[13px] text-ink-faint">
-                        {CHANNEL_LABELS[p.channel]} &middot; {p.contact_info}
-                      </span>
-                    )}
+                    <span className="mt-0.5 block truncate text-[13px] text-ink-soft">
+                      {p.last_note ?? `${CHANNEL_LABELS[p.channel]} · ${p.contact_info}`}
+                    </span>
                   </span>
                 </button>
 
                 <span
-                  className={`tnum shrink-0 text-[13px] ${
-                    late >= 7 ? "font-medium text-late" : late > 0 ? "text-ink-soft" : "text-ink-faint"
+                  className={`tnum shrink-0 rounded-full px-2 py-0.5 text-[12px] whitespace-nowrap ${
+                    late >= 7
+                      ? "bg-late/10 font-medium text-late"
+                      : late > 0
+                        ? "text-ink-soft"
+                        : "text-ink-faint"
                   }`}
                 >
                   {overdueLabel(late)}
@@ -64,7 +61,7 @@ export function TodayList({ prospects, today, timezone, defaultInterval }: Props
 
                 <Link
                   href={`/prospects/${p.id}`}
-                  className="shrink-0 text-[13px] text-ink-faint opacity-0 transition-opacity duration-150 hover:text-ink focus-visible:opacity-100 group-hover:opacity-100"
+                  className="shrink-0 rounded-md px-2 py-1 text-[13px] text-ink-faint opacity-0 transition-opacity duration-150 group-hover:opacity-100 hover:text-ink focus-visible:opacity-100"
                 >
                   Open
                 </Link>

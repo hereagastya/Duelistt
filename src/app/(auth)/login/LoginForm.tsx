@@ -30,7 +30,13 @@ export function LoginForm({ next }: { next: string }) {
 
       <div>
         <Label htmlFor="password">Password</Label>
-        <Input id="password" name="password" type="password" autoComplete="current-password" required />
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          autoComplete="current-password"
+          required
+        />
       </div>
 
       {state.error && <FormError>{state.error}</FormError>}

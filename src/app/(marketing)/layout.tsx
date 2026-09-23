@@ -18,7 +18,15 @@ export const metadata: Metadata = {
  * The landing page runs on its own palette. `night` scopes the dark tokens and
  * the browser surfaces (selection, focus ring, scrollbars) so the authed app
  * keeps its paper-and-ink theme untouched.
+ *
+ * `night-ground` is a single warm lift from the top and `grain` a fine noise
+ * layer -- both sit behind the content (which is raised to z-10) so nothing
+ * renders through the text.
  */
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
-  return <div className="night min-h-dvh bg-night text-chalk">{children}</div>;
+  return (
+    <div className="night night-ground grain min-h-dvh text-chalk">
+      <div className="relative z-10">{children}</div>
+    </div>
+  );
 }

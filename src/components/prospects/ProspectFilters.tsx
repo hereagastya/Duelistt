@@ -53,7 +53,7 @@ export function ProspectFilters({ total }: { total: number }) {
   const filtered = Boolean(status || channel || params.get("q"));
 
   return (
-    <div className="flex flex-col gap-3 pb-4">
+    <div className="flex flex-col gap-3 pb-5">
       {/* Each control fills a sized wrapper: the shared control style is w-full,
           so widths belong on the container, not on the element. */}
       <div className="flex flex-wrap items-center gap-2">
@@ -64,7 +64,6 @@ export function ProspectFilters({ total }: { total: number }) {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by name"
             aria-label="Search prospects by name"
-            className="py-1.5 text-[14px]"
           />
         </div>
 
@@ -73,7 +72,6 @@ export function ProspectFilters({ total }: { total: number }) {
             value={status}
             onChange={(e) => setParam("status", e.target.value)}
             aria-label="Filter by status"
-            className="py-1.5 text-[14px]"
           >
             <option value="">Any status</option>
             {PROSPECT_STATUSES.map((s) => (
@@ -89,7 +87,6 @@ export function ProspectFilters({ total }: { total: number }) {
             value={channel}
             onChange={(e) => setParam("channel", e.target.value)}
             aria-label="Filter by channel"
-            className="py-1.5 text-[14px]"
           >
             <option value="">Any channel</option>
             {CHANNELS.map((c) => (
@@ -110,11 +107,11 @@ export function ProspectFilters({ total }: { total: number }) {
         {total} {total === 1 ? "prospect" : "prospects"}
         {filtered && (
           <>
-            {" "}
+            {" · "}
             <button
               type="button"
               onClick={() => apply(new URLSearchParams())}
-              className="text-accent underline underline-offset-[3px] hover:text-accent-hover"
+              className="text-accent-ink underline decoration-accent-line underline-offset-[3px] hover:decoration-accent-ink"
             >
               Clear filters
             </button>

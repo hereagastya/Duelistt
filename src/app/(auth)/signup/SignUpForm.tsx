@@ -12,12 +12,12 @@ export function SignUpForm() {
   const [state, formAction, pending] = useActionState(signUp, INITIAL);
 
   // Captured once, at the only moment the browser will tell us for free.
-  // It decides what "7am" means for this user's digest, and Settings can change it.
+  // It decides what "your hour" means for the digest, and Settings can change it.
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   if (state.message) {
     return (
-      <p className="border-l-[1px] border-accent bg-accent-wash px-4 py-3 text-[14px] text-ink">
+      <p className="rounded-lg border border-accent-line bg-accent-wash px-4 py-3 text-[14px] text-ink">
         {state.message}
       </p>
     );
@@ -44,7 +44,14 @@ export function SignUpForm() {
         <Label htmlFor="password" hint="8 characters or more">
           Password
         </Label>
-        <Input id="password" name="password" type="password" autoComplete="new-password" required minLength={8} />
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          autoComplete="new-password"
+          required
+          minLength={8}
+        />
       </div>
 
       {state.error && <FormError>{state.error}</FormError>}

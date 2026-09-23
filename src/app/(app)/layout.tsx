@@ -8,10 +8,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const access = checkAccess(profile);
 
   return (
-    <div className="min-h-dvh">
+    <div className="min-h-dvh bg-paper">
       <Nav email={email} />
       <TrialNotice access={access} />
-      <main className="mx-auto w-full max-w-[46rem] px-6 pb-24">{children}</main>
+      <main className="mx-auto w-full max-w-[48rem] px-6 pb-28">{children}</main>
     </div>
   );
 }
