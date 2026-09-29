@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { signOut } from "@/app/(auth)/actions";
+import { Logo } from "@/components/marketing/Logo";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 const LINKS = [
   { href: "/today", label: "Today" },
@@ -20,9 +22,10 @@ export function Nav({ email }: { email: string }) {
         <nav className="flex items-center gap-1">
           <Link
             href="/today"
-            className="mr-3 text-[15px] font-semibold tracking-[-0.025em] text-ink"
+            className="press mr-3 flex items-center gap-2 text-[15px] font-semibold tracking-[-0.025em] text-ink"
           >
-            Duelistt
+            <Logo size={24} />
+            <span className="hidden sm:inline">Duelistt</span>
           </Link>
 
           {LINKS.map(({ href, label }) => {
@@ -32,8 +35,10 @@ export function Nav({ email }: { email: string }) {
                 key={href}
                 href={href}
                 aria-current={active ? "page" : undefined}
-                className={`relative rounded-md px-2.5 py-1.5 text-[14px] transition-colors duration-150 ${
-                  active ? "font-medium text-ink" : "text-ink-soft hover:bg-paper-sunk hover:text-ink"
+                className={`press relative rounded-md px-2.5 py-1.5 text-[14px] ${
+                  active
+                    ? "font-medium text-ink"
+                    : "text-ink-soft hover:bg-paper-sunk hover:text-ink"
                 }`}
               >
                 {label}
@@ -48,15 +53,18 @@ export function Nav({ email }: { email: string }) {
           })}
         </nav>
 
-        <form action={signOut}>
-          <button
-            type="submit"
-            title={email}
-            className="rounded-md px-2 py-1.5 text-[13px] text-ink-faint transition-colors duration-150 hover:bg-paper-sunk hover:text-ink"
-          >
-            Sign out
-          </button>
-        </form>
+        <div className="flex items-center gap-1">
+          <ThemeToggle />
+          <form action={signOut}>
+            <button
+              type="submit"
+              title={email}
+              className="press rounded-md px-2.5 py-1.5 text-[13px] text-ink-faint hover:bg-paper-sunk hover:text-ink"
+            >
+              Sign out
+            </button>
+          </form>
+        </div>
       </div>
     </header>
   );

@@ -6,9 +6,10 @@ import type {
 } from "react";
 
 /*
-  Controls sit on white with a hairline and a soft focus ring in the brand
-  amber -- the modern light-UI pattern, rather than a hard blue browser outline
-  or a flat grey box.
+  Controls sit on the raised surface with a hairline and a soft focus ring in
+  the brand amber, rather than a hard browser outline. Every colour here is a
+  theme token, so the same control reads correctly in night and in day; the
+  drawn chevron is a mid grey on purpose, legible against either ground.
 */
 const CONTROL =
   "w-full rounded-md border border-rule-strong bg-surface text-ink shadow-xs " +
@@ -29,15 +30,23 @@ export function Label({
   hint?: string;
 }) {
   return (
-    <label htmlFor={htmlFor} className="mb-1.5 flex items-baseline justify-between gap-3">
+    <label
+      htmlFor={htmlFor}
+      className="mb-1.5 flex items-baseline justify-between gap-3"
+    >
       <span className="text-[13px] font-medium text-ink">{children}</span>
       {hint && <span className="text-[12px] text-ink-faint">{hint}</span>}
     </label>
   );
 }
 
-export function Input({ className = "", ...rest }: InputHTMLAttributes<HTMLInputElement>) {
-  return <input {...rest} className={`${CONTROL} ${CONTROL_SIZE} ${className}`} />;
+export function Input({
+  className = "",
+  ...rest
+}: InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <input {...rest} className={`${CONTROL} ${CONTROL_SIZE} ${className}`} />
+  );
 }
 
 // appearance-none removes the platform arrow, so we draw one; without it the
@@ -45,7 +54,10 @@ export function Input({ className = "", ...rest }: InputHTMLAttributes<HTMLInput
 const CHEVRON =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23a3a09b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6.5 4 3.5 4-3.5'/%3E%3C/svg%3E\")";
 
-export function Select({ className = "", ...rest }: SelectHTMLAttributes<HTMLSelectElement>) {
+export function Select({
+  className = "",
+  ...rest
+}: SelectHTMLAttributes<HTMLSelectElement>) {
   return (
     <select
       {...rest}
@@ -61,7 +73,10 @@ export function Select({ className = "", ...rest }: SelectHTMLAttributes<HTMLSel
   );
 }
 
-export function Textarea({ className = "", ...rest }: TextareaHTMLAttributes<HTMLTextAreaElement>) {
+export function Textarea({
+  className = "",
+  ...rest
+}: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <textarea
       {...rest}

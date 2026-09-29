@@ -4,13 +4,13 @@ type Variant = "primary" | "secondary" | "ghost" | "danger";
 type Size = "md" | "sm";
 
 /*
-  Primary is an amber fill carrying ink text -- the same button as the landing
-  page, and high contrast in both directions. Secondary is a white surface with
-  a hairline and a whisper of elevation, not a grey box.
+  Primary is an amber fill carrying `accent-on` -- a dark ink that does NOT
+  follow the theme, because the fill does not either. Using `ink` here would
+  turn the label near-white on amber the moment night is the default.
 */
 const VARIANTS: Record<Variant, string> = {
   primary:
-    "bg-accent text-ink shadow-xs hover:bg-accent-hover active:bg-accent-hover disabled:bg-rule-strong disabled:text-ink-faint disabled:shadow-none",
+    "bg-accent text-accent-on shadow-xs hover:bg-accent-hover active:bg-accent-hover disabled:bg-rule-strong disabled:text-ink-faint disabled:shadow-none",
   secondary:
     "bg-surface text-ink border border-rule-strong shadow-xs hover:bg-paper-sunk hover:border-ink-faint/60",
   ghost: "bg-transparent text-ink-soft hover:bg-paper-sunk hover:text-ink",
@@ -24,7 +24,7 @@ const SIZES: Record<Size, string> = {
 };
 
 const BASE =
-  "inline-flex shrink-0 items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap transition-[background-color,border-color,box-shadow,color] duration-150";
+  "press inline-flex shrink-0 items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap";
 
 /** The same styling for anchors, so a link that acts as a button looks like one. */
 export function buttonClasses(variant: Variant = "primary", size: Size = "md") {
@@ -51,7 +51,7 @@ export function Button({
       {...rest}
       disabled={disabled || pending}
       aria-busy={pending || undefined}
-      className={`inline-flex shrink-0 items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap transition-[background-color,border-color,box-shadow,color] duration-150 disabled:cursor-not-allowed ${SIZES[size]} ${VARIANTS[variant]} ${className}`}
+      className={`${BASE} disabled:cursor-not-allowed disabled:active:scale-100 ${SIZES[size]} ${VARIANTS[variant]} ${className}`}
     >
       {pending && (
         <span

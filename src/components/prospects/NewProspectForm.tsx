@@ -6,7 +6,13 @@ import { useActionState, useState } from "react";
 import { createProspect, type NewProspectState } from "@/lib/actions/prospects";
 import { followUpPresets } from "@/lib/followups";
 import { Button } from "@/components/ui/Button";
-import { FormError, Input, Label, Select, Textarea } from "@/components/ui/Field";
+import {
+  FormError,
+  Input,
+  Label,
+  Select,
+  Textarea,
+} from "@/components/ui/Field";
 import {
   CHANNEL_LABELS,
   CHANNELS,
@@ -40,7 +46,8 @@ export function NewProspectForm({
   const [channel, setChannel] = useState<Channel>("email");
 
   const presets = followUpPresets(timezone, defaultInterval);
-  const defaultDate = presets.find((p) => p.days === defaultInterval) ?? presets[0]!;
+  const defaultDate =
+    presets.find((p) => p.days === defaultInterval) ?? presets[0]!;
   const [followUpDate, setFollowUpDate] = useState(defaultDate.date);
 
   const preferredOutcomes = OUTCOMES_BY_CHANNEL[channel];
@@ -56,7 +63,13 @@ export function NewProspectForm({
       <section className="rounded-xl border border-rule bg-surface p-5 shadow-xs sm:p-6">
         <div>
           <Label htmlFor="name">Name</Label>
-          <Input id="name" name="name" required autoFocus placeholder="Priya Raman" />
+          <Input
+            id="name"
+            name="name"
+            required
+            autoFocus
+            placeholder="Priya Raman"
+          />
         </div>
 
         <div className="mt-4 grid gap-4 sm:grid-cols-[9.5rem_1fr]">
@@ -99,7 +112,13 @@ export function NewProspectForm({
         <div className="flex flex-col gap-4">
           <div>
             <Label htmlFor="outcome">What happened</Label>
-            <Select key={channel} id="outcome" name="outcome" defaultValue={outcomes[0]} required>
+            <Select
+              key={channel}
+              id="outcome"
+              name="outcome"
+              defaultValue={outcomes[0]}
+              required
+            >
               {outcomes.map((o) => (
                 <option key={o} value={o}>
                   {OUTCOME_LABELS[o]}
@@ -123,7 +142,9 @@ export function NewProspectForm({
       </section>
 
       <fieldset className="rounded-xl border border-rule bg-surface p-5 shadow-xs sm:p-6">
-        <legend className="px-1 text-[14px] font-medium text-ink">Follow up</legend>
+        <legend className="px-1 text-[14px] font-medium text-ink">
+          Follow up
+        </legend>
 
         <div className="mt-1 flex flex-wrap items-center gap-1.5">
           {presets.map((p) => (
@@ -132,10 +153,10 @@ export function NewProspectForm({
               type="button"
               onClick={() => setFollowUpDate(p.date)}
               aria-pressed={followUpDate === p.date}
-              className={`h-8 rounded-md border px-2.5 text-[13px] font-medium transition-colors duration-150 ${
+              className={`press h-8 rounded-md border px-2.5 text-[13px] font-medium ${
                 followUpDate === p.date
                   ? "border-accent-line bg-accent-wash text-ink"
-                  : "border-rule-strong bg-surface text-ink-soft shadow-xs hover:border-ink-faint/60 hover:text-ink"
+                  : "border-rule-strong bg-surface text-ink-soft shadow-xs hover:border-accent-line hover:bg-paper-sunk hover:text-ink"
               }`}
             >
               {p.label}
@@ -160,7 +181,7 @@ export function NewProspectForm({
         </Button>
         <Link
           href="/today"
-          className="rounded-md px-2 py-1 text-[14px] text-ink-soft transition-colors duration-150 hover:text-ink"
+          className="press rounded-md px-2.5 py-1.5 text-[14px] text-ink-soft hover:bg-paper-sunk hover:text-ink"
         >
           Cancel
         </Link>

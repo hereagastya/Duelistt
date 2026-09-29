@@ -62,7 +62,10 @@ export default async function ProspectsPage({
       <PageHeader
         title="All prospects"
         action={
-          <Link href="/prospects/new" className={buttonClasses("primary", "sm")}>
+          <Link
+            href="/prospects/new"
+            className={buttonClasses("primary", "sm")}
+          >
             Add prospect
           </Link>
         }
@@ -92,9 +95,9 @@ export default async function ProspectsPage({
               <li key={p.id} className="px-3">
                 <Link
                   href={`/prospects/${p.id}`}
-                  className="group -mx-3 flex items-center gap-3 rounded-lg px-3 py-3 transition-colors duration-150 hover:bg-paper-sunk"
+                  className="row-live group -mx-3 flex items-center gap-3 rounded-lg px-3 py-3"
                 >
-                  <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-paper-sunk text-ink-faint transition-colors duration-150 group-hover:bg-surface group-hover:text-accent-ink">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-paper-sunk text-ink-faint ring-1 ring-rule transition-[background-color,color,box-shadow] duration-150 group-hover:bg-accent-wash group-hover:text-accent-ink group-hover:ring-accent-line">
                     <ChannelIcon channel={p.channel} />
                   </span>
 
@@ -115,7 +118,11 @@ export default async function ProspectsPage({
                     {p.next_follow_up_date === null ? (
                       "—"
                     ) : late !== null && late > 0 ? (
-                      <span className={late >= 7 ? "font-medium text-late" : "text-ink-soft"}>
+                      <span
+                        className={
+                          late >= 7 ? "font-medium text-late" : "text-ink-soft"
+                        }
+                      >
                         {late}d late
                       </span>
                     ) : (
@@ -137,8 +144,12 @@ function Empty({ filtered }: { filtered: boolean }) {
     <div className="rounded-xl border border-rule bg-surface px-8 py-14 text-center shadow-xs">
       {filtered ? (
         <>
-          <p className="text-[16px] font-medium text-ink">No prospects match those filters.</p>
-          <p className="mt-1.5 text-[14px] text-ink-soft">Widen the search or clear them.</p>
+          <p className="text-[16px] font-medium text-ink">
+            No prospects match those filters.
+          </p>
+          <p className="mt-1.5 text-[14px] text-ink-soft">
+            Widen the search or clear them.
+          </p>
         </>
       ) : (
         <>

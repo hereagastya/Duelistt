@@ -7,11 +7,20 @@ import { ChannelIcon } from "@/components/ui/ChannelIcon";
 import { requireProfile } from "@/lib/actions/profile";
 import { createClient } from "@/lib/supabase/server";
 import { daysBetween, formatDate, overdueLabel, todayIn } from "@/lib/date";
-import { CHANNEL_LABELS, OUTCOME_LABELS, type Prospect, type Touch } from "@/lib/types";
+import {
+  CHANNEL_LABELS,
+  OUTCOME_LABELS,
+  type Prospect,
+  type Touch,
+} from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const supabase = await createClient();
   const { data } = await supabase
@@ -58,7 +67,7 @@ export default async function ProspectDetailPage({
       <div className="pt-8 pb-6">
         <Link
           href="/prospects"
-          className="text-[13px] text-ink-faint transition-colors duration-150 hover:text-ink"
+          className="press -mx-2 inline-block rounded-md px-2 py-1 text-[13px] text-ink-faint hover:bg-paper-sunk hover:text-ink"
         >
           &larr; All prospects
         </Link>
@@ -79,7 +88,11 @@ export default async function ProspectDetailPage({
           </div>
 
           <LogTouchButton
-            prospect={{ id: prospect.id, name: prospect.name, channel: prospect.channel }}
+            prospect={{
+              id: prospect.id,
+              name: prospect.name,
+              channel: prospect.channel,
+            }}
             today={today}
             timezone={profile.timezone}
             defaultInterval={profile.default_follow_up_interval}
@@ -87,31 +100,47 @@ export default async function ProspectDetailPage({
         </div>
       </div>
 
-      <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-rule bg-rule shadow-xs sm:grid-cols-3">
+      <dl className="lift grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-rule bg-rule shadow-xs sm:grid-cols-3">
         <div className="bg-surface px-4 py-3.5">
-          <dt className="text-[12px] tracking-[0.01em] text-ink-faint">Status</dt>
+          <dt className="text-[12px] tracking-[0.01em] text-ink-faint">
+            Status
+          </dt>
           <dd className="mt-1">
             <StatusTag status={prospect.status} />
           </dd>
         </div>
         <div className="bg-surface px-4 py-3.5">
-          <dt className="text-[12px] tracking-[0.01em] text-ink-faint">Next follow-up</dt>
+          <dt className="text-[12px] tracking-[0.01em] text-ink-faint">
+            Next follow-up
+          </dt>
           <dd className="tnum mt-1 text-[13px]">
             {prospect.next_follow_up_date === null ? (
               <span className="text-ink-faint">None scheduled</span>
             ) : (
-              <span className={late !== null && late >= 7 ? "font-medium text-late" : "text-ink"}>
+              <span
+                className={
+                  late !== null && late >= 7
+                    ? "font-medium text-late"
+                    : "text-ink"
+                }
+              >
                 {formatDate(prospect.next_follow_up_date, profile.timezone)}
                 {late !== null && late >= 0 && (
-                  <span className="ml-2 text-ink-soft">{overdueLabel(late)}</span>
+                  <span className="ml-2 text-ink-soft">
+                    {overdueLabel(late)}
+                  </span>
                 )}
               </span>
             )}
           </dd>
         </div>
         <div className="bg-surface px-4 py-3.5">
-          <dt className="text-[12px] tracking-[0.01em] text-ink-faint">Touches</dt>
-          <dd className="tnum mt-1 text-[13px] text-ink">{touches?.length ?? 0}</dd>
+          <dt className="text-[12px] tracking-[0.01em] text-ink-faint">
+            Touches
+          </dt>
+          <dd className="tnum mt-1 text-[13px] text-ink">
+            {touches?.length ?? 0}
+          </dd>
         </div>
       </dl>
 
@@ -142,8 +171,12 @@ export default async function ProspectDetailPage({
               </span>
 
               <div className="min-w-0 flex-1 pb-1">
-                <p className="text-[14px] font-medium text-ink">{OUTCOME_LABELS[t.outcome]}</p>
-                {t.note && <p className="mt-1 text-[14px] text-ink-soft">{t.note}</p>}
+                <p className="text-[14px] font-medium text-ink">
+                  {OUTCOME_LABELS[t.outcome]}
+                </p>
+                {t.note && (
+                  <p className="mt-1 text-[14px] text-ink-soft">{t.note}</p>
+                )}
               </div>
             </li>
           ))}

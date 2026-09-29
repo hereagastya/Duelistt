@@ -1,11 +1,23 @@
 "use client";
 
-import { useActionState, useCallback, useEffect, useRef, useState } from "react";
+import {
+  useActionState,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { logTouch, type LogTouchState } from "@/lib/actions/touches";
 import { followUpPresets } from "@/lib/followups";
 import { Button } from "@/components/ui/Button";
-import { FormError, Input, Label, Select, Textarea } from "@/components/ui/Field";
+import {
+  FormError,
+  Input,
+  Label,
+  Select,
+  Textarea,
+} from "@/components/ui/Field";
 import {
   CHANNEL_LABELS,
   CHANNELS,
@@ -81,17 +93,25 @@ export function LogTouchModal({
       onClick={(e) => {
         if (e.target === dialogRef.current) close();
       }}
-      className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-xl border border-rule bg-surface p-0 text-ink shadow-lg backdrop:bg-ink/35 backdrop:backdrop-blur-[2px]"
+      // The scrim is a fixed near-black, not `ink`: in night `ink` is the text
+      // colour, and a near-white scrim would flash the screen white.
+      className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-xl border border-rule bg-surface p-0 text-ink shadow-lg backdrop:bg-black/55 backdrop:backdrop-blur-[3px]"
     >
       <form action={formAction} className="flex flex-col">
         <input type="hidden" name="prospect_id" value={prospect.id} />
         <input type="hidden" name="disposition" value={disposition} />
         {disposition === "schedule" && (
-          <input type="hidden" name="next_follow_up_date" value={followUpDate} />
+          <input
+            type="hidden"
+            name="next_follow_up_date"
+            value={followUpDate}
+          />
         )}
 
         <div className="px-6 pt-5 pb-4">
-          <h2 className="text-[17px] font-semibold tracking-[-0.02em]">Log a touch</h2>
+          <h2 className="text-[17px] font-semibold tracking-[-0.02em]">
+            Log a touch
+          </h2>
           <p className="mt-0.5 text-[14px] text-ink-soft">{prospect.name}</p>
         </div>
 
@@ -128,7 +148,13 @@ export function LogTouchModal({
 
           <div>
             <Label htmlFor="outcome">What happened</Label>
-            <Select key={channel} id="outcome" name="outcome" defaultValue={outcomes[0]} required>
+            <Select
+              key={channel}
+              id="outcome"
+              name="outcome"
+              defaultValue={outcomes[0]}
+              required
+            >
               {outcomes.map((o) => (
                 <option key={o} value={o}>
                   {OUTCOME_LABELS[o]}
@@ -150,7 +176,9 @@ export function LogTouchModal({
           </div>
 
           <fieldset className="border-t border-rule pt-4">
-            <legend className="mb-2.5 text-[13px] font-medium text-ink">Then</legend>
+            <legend className="mb-2.5 text-[13px] font-medium text-ink">
+              Then
+            </legend>
 
             <div className="flex flex-wrap gap-1.5">
               {DISPOSITIONS.map((d) => (
@@ -226,7 +254,7 @@ function Chip({
   solid?: boolean;
 }) {
   const activeStyle = solid
-    ? "border-accent bg-accent text-ink shadow-xs"
+    ? "border-accent bg-accent text-accent-on shadow-xs"
     : "border-accent-line bg-accent-wash text-ink";
 
   return (
@@ -234,10 +262,10 @@ function Chip({
       type="button"
       onClick={onSelect}
       aria-pressed={active}
-      className={`h-8 rounded-md border px-2.5 text-[13px] font-medium transition-colors duration-150 ${
+      className={`press h-8 rounded-md border px-2.5 text-[13px] font-medium ${
         active
           ? activeStyle
-          : "border-rule-strong bg-surface text-ink-soft shadow-xs hover:border-ink-faint/60 hover:text-ink"
+          : "border-rule-strong bg-surface text-ink-soft shadow-xs hover:border-accent-line hover:bg-paper-sunk hover:text-ink"
       }`}
     >
       {label}

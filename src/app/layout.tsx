@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, IBM_Plex_Serif } from "next/font/google";
 
+import { ThemeScript } from "@/components/ui/ThemeScript";
+
 import "./globals.css";
 
 const plex = IBM_Plex_Sans({
@@ -35,7 +37,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${plex.variable} ${plexSerif.variable}`}>
+    // data-theme is written by ThemeScript before paint; suppressHydrationWarning
+    // keeps React from complaining that the server could not have known it.
+    <html
+      lang="en"
+      data-theme="dark"
+      suppressHydrationWarning
+      className={`${plex.variable} ${plexSerif.variable}`}
+    >
+      <head>
+        <ThemeScript />
+      </head>
       <body>{children}</body>
     </html>
   );
