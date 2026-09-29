@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Duelistt — the follow-up tracker for manual outreach",
+  // The root template appends "· Duelistt"; this page already says it.
+  title: { absolute: "Duelistt — the follow-up tracker for manual outreach" },
   description:
     "A dead-simple follow-up tracker for cold calls, emails, DMs and LinkedIn. Log who you talked to, what happened, and when to follow up. Duelistt tells you exactly who is due today.",
   openGraph: {

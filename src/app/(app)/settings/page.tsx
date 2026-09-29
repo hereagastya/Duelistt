@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { requireProfile } from "@/lib/actions/profile";
 import { checkAccess } from "@/lib/billing/gate";
 
-export const metadata = { title: "Settings · Duelistt" };
+export const metadata = { title: "Settings" };
 export const dynamic = "force-dynamic";
 
 /**

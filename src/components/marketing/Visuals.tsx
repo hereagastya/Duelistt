@@ -303,27 +303,3 @@ export function ClearedVisual() {
     </div>
   );
 }
-
-/**
-  The wordmark's companion. A crossed-blades glyph read as a close button, so
-  the mark is the queue instead: three rules shortening as the day clears,
-  with the one that is due still lit.
-*/
-export function Mark({ className = "" }: { className?: string }) {
-  return (
-    <span
-      aria-hidden
-      className={`flex size-7 items-center justify-center rounded-lg bg-ember/15 ring-1 ring-ember/30 ${className}`}
-    >
-      <svg viewBox="0 0 16 16" fill="none" className="size-4 text-ember">
-        <path
-          d="M3 4.25h10M3 8h6.5M3 11.75h3.5"
-          stroke="currentColor"
-          strokeWidth="1.7"
-          strokeLinecap="round"
-        />
-        <circle cx="12.5" cy="11.75" r="1.35" fill="currentColor" />
-      </svg>
-    </span>
-  );
-}

@@ -1,11 +1,12 @@
 import Link from "next/link";
 
+import { Wordmark } from "@/components/marketing/Logo";
+import { Nav } from "@/components/marketing/Nav";
 import { Reveal } from "@/components/marketing/Reveal";
 import {
   ClearedVisual,
   DigestVisual,
   LogVisual,
-  Mark,
   QueueVisual,
 } from "@/components/marketing/Visuals";
 
@@ -70,6 +71,23 @@ const REFUSALS = [
   "Seat licences",
 ];
 
+const ABOUT = [
+  {
+    term: "Who it is for",
+    detail:
+      "One person doing their own outreach. No seats to buy, no team to roll it out to.",
+  },
+  {
+    term: "Where it sits",
+    detail:
+      "Beside your inbox and your phone, not in front of them. Duelistt never sends the message.",
+  },
+  {
+    term: "What it costs",
+    detail: "About three minutes a day, and $6.99 a month after the trial.",
+  },
+];
+
 const INCLUDED = [
   "Unlimited prospects and touches",
   "The daily digest, at the hour you pick, in your timezone",
@@ -108,32 +126,7 @@ function Step({
 export default function LandingPage() {
   return (
     <>
-      {/* The one intentional glass surface: a pill that floats over the page. */}
-      <div className="sticky top-0 z-50 px-4 pt-4 sm:px-6">
-        <header className="glass-nav mx-auto flex w-full max-w-[64rem] items-center justify-between rounded-full py-2.5 pr-2.5 pl-4">
-          <Link href="/" className="flex items-center gap-2.5">
-            <Mark />
-            <span className="text-[15px] font-semibold tracking-[-0.03em]">
-              Duelistt
-            </span>
-          </Link>
-
-          <nav className="flex items-center gap-1">
-            <Link
-              href="/login"
-              className="rounded-full px-3.5 py-2 text-[14px] text-chalk-soft transition-colors duration-150 hover:bg-white/[0.06] hover:text-chalk"
-            >
-              Sign in
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-full bg-ember px-4 py-2 text-[14px] font-medium text-night transition-colors duration-150 hover:bg-ember-deep"
-            >
-              Start free trial
-            </Link>
-          </nav>
-        </header>
-      </div>
+      <Nav />
 
       {/* Hero */}
       <section className="spotlight dotgrid relative overflow-hidden">
@@ -147,7 +140,9 @@ export default function LandingPage() {
 
           <h1 className="mx-auto mt-7 max-w-[17ch] text-[2.9rem] leading-[1.02] font-semibold tracking-[-0.045em] text-balance sm:text-[4rem] lg:text-[4.6rem]">
             You didn&rsquo;t lose the deal.{" "}
-            <span className="text-ember">You forgot to call back.</span>
+            <span className="text-ember">
+              You <span className="accent-word">forgot</span> to call back.
+            </span>
           </h1>
 
           <p className="mx-auto mt-7 max-w-[46rem] text-[16px] leading-[1.7] text-chalk-soft sm:text-[17px]">
@@ -305,7 +300,10 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing, as its own section */}
-      <section className="relative border-y border-white/[0.06] bg-white/[0.012] py-20 lg:py-28">
+      <section
+        id="pricing"
+        className="relative scroll-mt-24 border-y border-white/[0.06] bg-white/[0.012] py-20 lg:py-28"
+      >
         <div className={`${SHELL} relative z-10`}>
           <Reveal className="text-center">
             <SectionLabel>Pricing</SectionLabel>
@@ -358,6 +356,53 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* About */}
+      <section id="about" className={`${SHELL} scroll-mt-24 py-20 lg:py-28`}>
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-20">
+          <Reveal>
+            <SectionLabel>About</SectionLabel>
+            <h2 className="mt-5 text-[2rem] leading-[1.06] font-semibold tracking-[-0.04em] sm:text-[2.6rem]">
+              One person. One list.{" "}
+              <span className="accent-word text-ember">One job.</span>
+            </h2>
+          </Reveal>
+
+          <Reveal delay={90}>
+            <p className="max-w-[38rem] text-[17px] leading-[1.7] text-chalk-soft">
+              Duelistt is built for someone doing outreach by hand &mdash; in
+              their own inbox, on their own phone, in their own LinkedIn. It
+              never sends anything for you and never plugs into those channels.
+              It is the record and the reminder beside them.
+            </p>
+            <p className="mt-5 max-w-[38rem] text-[17px] leading-[1.7] text-chalk-soft">
+              That is also why it stays small. Every field you have to fill in
+              is a reason to stop logging, and a log you stop keeping is worse
+              than no log at all. So there are two things to write down &mdash;
+              what happened, and when to try again &mdash; and one screen that
+              tells you who is waiting.
+            </p>
+
+            <dl className="mt-10 max-w-[38rem]">
+              {ABOUT.map((row, i) => (
+                <div
+                  key={row.term}
+                  className={`grid gap-1.5 py-5 sm:grid-cols-[11rem_minmax(0,1fr)] sm:gap-8 ${
+                    i !== ABOUT.length - 1 ? "border-b border-white/[0.07]" : ""
+                  }`}
+                >
+                  <dt className="text-[13px] font-medium tracking-[0.14em] text-ember uppercase">
+                    {row.term}
+                  </dt>
+                  <dd className="text-[15px] leading-[1.6] text-chalk-soft">
+                    {row.detail}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+        </div>
+      </section>
+
       {/* Close */}
       <section className="spotlight-center relative overflow-hidden">
         <div className={`${SHELL} relative z-10 py-24 text-center lg:py-28`}>
@@ -377,8 +422,8 @@ export default function LandingPage() {
             </div>
 
             <p className="mx-auto mt-12 max-w-[34rem] text-[15px] leading-[1.6] text-chalk-faint">
-              Every lead&rsquo;s a duel. Don&rsquo;t lose it by going quiet
-              first.
+              Every lead&rsquo;s a <span className="accent-word">duel</span>.
+              Don&rsquo;t lose it by going quiet first.
             </p>
           </Reveal>
         </div>
@@ -388,12 +433,7 @@ export default function LandingPage() {
         <div
           className={`${SHELL} flex flex-wrap items-center justify-between gap-4 py-8`}
         >
-          <span className="flex items-center gap-2.5">
-            <Mark />
-            <span className="text-[14px] font-semibold tracking-[-0.03em]">
-              Duelistt
-            </span>
-          </span>
+          <Wordmark size={28} />
           <Link
             href="/login"
             className="text-[14px] text-chalk-faint transition-colors duration-150 hover:text-chalk"

@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 import { todayIn } from "@/lib/date";
 import type { DueProspect } from "@/lib/types";
 
-export const metadata = { title: "Today · Duelistt" };
+export const metadata = { title: "Today" };
 
 // The queue changes the moment a touch is logged; never serve it from cache.
 export const dynamic = "force-dynamic";

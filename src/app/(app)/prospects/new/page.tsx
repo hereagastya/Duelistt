@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { requireProfile } from "@/lib/actions/profile";
 import { todayIn } from "@/lib/date";
 
-export const metadata = { title: "Add prospect · Duelistt" };
+export const metadata = { title: "Add prospect" };
 
 export default async function NewProspectPage() {
   const { profile } = await requireProfile();
