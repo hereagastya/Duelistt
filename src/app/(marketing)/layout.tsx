@@ -13,6 +13,14 @@ export const metadata: Metadata = {
     siteName: "Duelistt",
     type: "website",
   },
+  // summary_large_image is what makes X render the banner full width instead of
+  // as a thumbnail beside the text.
+  twitter: {
+    card: "summary_large_image",
+    title: "Duelistt — you didn't lose the deal, you forgot to call back",
+    description:
+      "A dead-simple follow-up tracker for manual outreach. Not a CRM: no pipelines, no deal stages, no dashboard to babysit.",
+  },
 };
 
 /**
@@ -24,7 +32,11 @@ export const metadata: Metadata = {
  * layer -- both sit behind the content (which is raised to z-10) so nothing
  * renders through the text.
  */
-export default function MarketingLayout({ children }: { children: React.ReactNode }) {
+export default function MarketingLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="night night-ground grain min-h-dvh text-chalk">
       <div className="relative z-10">{children}</div>

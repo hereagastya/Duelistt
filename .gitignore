@@ -9,3 +9,6 @@ next-env.d.ts
 
 # Impeccable design-hook cache (local, regenerated)
 .impeccable/hook.cache.json
+
+# Local QA credentials written by scripts/qa-seed.mjs
+scripts/.qa.local

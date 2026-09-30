@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Cycler } from "@/components/marketing/Cycler";
 import { Wordmark } from "@/components/marketing/Logo";
 import { Nav } from "@/components/marketing/Nav";
 import { Reveal } from "@/components/marketing/Reveal";
@@ -16,7 +17,7 @@ function StartTrial({ className = "" }: { className?: string }) {
   return (
     <Link
       href="/signup"
-      className={`inline-flex items-center justify-center rounded-xl bg-ember px-5 py-3 text-[15px] font-medium text-night shadow-[0_10px_30px_-12px_oklch(78%_0.145_68/0.7)] transition-colors duration-150 hover:bg-ember-deep ${className}`}
+      className={`press inline-flex items-center justify-center rounded-xl bg-ember px-5 py-3 text-[15px] font-medium text-night shadow-[0_10px_30px_-12px_oklch(78%_0.145_68/0.7)] hover:bg-ember-deep hover:shadow-[0_14px_38px_-12px_oklch(78%_0.145_68/0.85)] ${className}`}
     >
       Start free trial
     </Link>
@@ -134,8 +135,11 @@ export default function LandingPage() {
           className={`${SHELL} relative z-10 pt-20 pb-16 text-center sm:pt-28`}
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-[12px] text-chalk-soft">
-            <span aria-hidden className="size-1.5 rounded-full bg-ember" />
-            For cold calls, emails, DMs and LinkedIn
+            <span
+              aria-hidden
+              className="pulse-soft size-1.5 rounded-full bg-ember"
+            />
+            For cold <Cycler words={["calls", "emails", "DMs", "LinkedIn"]} />
           </span>
 
           <h1 className="mx-auto mt-7 max-w-[17ch] text-[2.9rem] leading-[1.02] font-semibold tracking-[-0.045em] text-balance sm:text-[4rem] lg:text-[4.6rem]">
@@ -280,7 +284,9 @@ export default function LandingPage() {
             {REFUSALS.map((item) => (
               <li
                 key={item}
-                className="text-[1.3rem] text-chalk-faint/70 line-through decoration-white/20 decoration-2 sm:text-[1.55rem]"
+                // Hovering one brightens it and turns its strike amber: the
+                // thing you thought you wanted, crossed out on purpose.
+                className="cursor-default text-[1.3rem] text-chalk-faint/70 line-through decoration-white/20 decoration-2 transition-colors duration-200 hover:text-chalk-soft hover:decoration-ember/70 sm:text-[1.55rem]"
               >
                 {item}
               </li>

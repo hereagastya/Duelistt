@@ -29,7 +29,9 @@ export async function generateMetadata({
     .eq("id", id)
     .maybeSingle<{ name: string }>();
 
-  return { title: data ? `${data.name} · Duelistt` : "Prospect · Duelistt" };
+  // The root layout's template appends "· Duelistt"; saying it here too gave
+  // tabs reading "Priya Raman · Duelistt · Duelistt".
+  return { title: data ? data.name : "Prospect" };
 }
 
 export default async function ProspectDetailPage({

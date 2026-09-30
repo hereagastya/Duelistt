@@ -440,22 +440,84 @@
       0 40px 90px -45px rgb(0 0 0 / 0.95);
   }
 
+  /*
+    The glass. Three layers stacked in one element:
+
+      1. a heavy backdrop blur, so what is behind the pill is smeared rather
+         than merely dimmed -- this is what makes it read as a thick pane
+         instead of a semi-transparent rectangle;
+      2. a grain film (::before), which is the thing real frosted glass has and
+         CSS blur does not -- without it the blur is suspiciously clean;
+      3. a diagonal sheen (::after), brightest at the top-left corner, so light
+         appears to be falling across the pane from somewhere.
+
+    Children need `position: relative` or the grain sits on top of them, so the
+    layers are pinned to z-index 0 and the content is raised in the markup.
+  */
   .glass-nav {
-    background: oklch(19% 0.012 60 / 0.55);
-    border: 1px solid oklch(100% 0 0 / 0.11);
+    position: relative;
+    isolation: isolate;
+    background: oklch(19% 0.012 60 / 0.5);
+    border: 1px solid oklch(100% 0 0 / 0.12);
     box-shadow:
-      inset 0 1px 0 0 oklch(100% 0 0 / 0.09),
+      inset 0 1px 0 0 oklch(100% 0 0 / 0.1),
+      inset 0 -1px 0 0 oklch(0% 0 0 / 0.25),
       0 18px 40px -24px rgb(0 0 0 / 0.85);
-    -webkit-backdrop-filter: blur(22px) saturate(170%);
-    backdrop-filter: blur(22px) saturate(170%);
+    -webkit-backdrop-filter: blur(34px) saturate(180%) brightness(1.06);
+    backdrop-filter: blur(34px) saturate(180%) brightness(1.06);
+  }
+
+  .glass-nav::before,
+  .glass-nav::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* The frost itself. */
+  .glass-nav::before {
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)' opacity='0.6'/%3E%3C/svg%3E");
+  }
+
+  /* Light falling across the pane. */
+  .glass-nav::after {
+    background:
+      linear-gradient(
+        118deg,
+        oklch(100% 0 0 / 0.1) 0%,
+        oklch(100% 0 0 / 0.02) 26%,
+        transparent 52%
+      ),
+      radial-gradient(
+        80% 180% at 50% -60%,
+        oklch(78% 0.145 68 / 0.07),
+        transparent 70%
+      );
   }
 
   /* Past the hero the nav sits over lit panels, so it has to carry more ground. */
   .glass-nav.is-scrolled {
-    background: oklch(17% 0.012 60 / 0.78);
+    background: oklch(17% 0.012 60 / 0.72);
     box-shadow:
-      inset 0 1px 0 0 oklch(100% 0 0 / 0.09),
+      inset 0 1px 0 0 oklch(100% 0 0 / 0.1),
+      inset 0 -1px 0 0 oklch(0% 0 0 / 0.3),
       0 22px 50px -26px rgb(0 0 0 / 0.95);
+  }
+
+  .glass-nav.is-scrolled::before {
+    opacity: 0.38;
+  }
+
+  /* Without backdrop-filter the pill has to be opaque or the text is unreadable. */
+  @supports not (backdrop-filter: blur(1px)) {
+    .glass-nav {
+      background: oklch(18% 0.012 60 / 0.96);
+    }
   }
 
   /*

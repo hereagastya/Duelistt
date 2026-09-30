@@ -43,8 +43,8 @@ export default async function TodayPage() {
           role="alert"
           className="rounded-lg border border-late/25 bg-late/[0.06] px-4 py-3 text-[14px] text-late"
         >
-          Your follow-ups could not be loaded. Reload the page — if it keeps failing, the
-          database is unreachable.
+          Your follow-ups could not be loaded. Reload the page — if it keeps
+          failing, the database is unreachable.
         </p>
       </>
     );
@@ -79,21 +79,50 @@ export default async function TodayPage() {
 
 async function EmptyToday() {
   const supabase = await createClient();
-  const { count } = await supabase.from("prospects").select("id", { count: "exact", head: true });
+  const { count } = await supabase
+    .from("prospects")
+    .select("id", { count: "exact", head: true });
 
   const hasAnyProspects = (count ?? 0) > 0;
 
+  // A clear queue is the good outcome, so the empty state gets to enjoy it.
+  // Keyed off the date so the line is stable all day rather than changing on
+  // every render, and so tomorrow's clear queue reads slightly differently.
+  const CLEARED = [
+    "Everyone you are tracking is scheduled for later. Close the tab.",
+    "Nobody is waiting on you. That is the entire point.",
+    "Inbox untouched, phone quiet, list clear. Go do the actual work.",
+    "The queue is empty. Duelistt has nothing to nag you about.",
+  ];
+  const line = CLEARED[new Date().getUTCDate() % CLEARED.length];
+
   return (
-    <div className="rounded-xl border border-rule bg-surface px-8 py-14 text-center shadow-xs">
+    <div className="lift rounded-xl border border-rule bg-surface px-8 py-14 text-center shadow-xs">
       {hasAnyProspects ? (
         <>
+          <span
+            aria-hidden
+            className="mx-auto mb-5 flex size-12 items-center justify-center rounded-2xl bg-accent-wash text-accent-ink ring-1 ring-accent-line"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.7}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="size-5"
+            >
+              <path d="m5 12.5 4.5 4.5L19 7.5" />
+            </svg>
+          </span>
           <p className="text-[16px] font-medium text-ink">Nothing due today.</p>
-          <p className="mx-auto mt-1.5 max-w-[34ch] text-[14px] text-ink-soft">
-            Everyone you are tracking is scheduled for later. Close the tab.
+          <p className="mx-auto mt-1.5 max-w-[38ch] text-[14px] text-ink-soft">
+            {line}
           </p>
           <Link
             href="/prospects"
-            className="mt-6 inline-block text-[14px] font-medium text-accent-ink underline decoration-accent-line underline-offset-[3px] hover:decoration-accent-ink"
+            className="press mt-6 inline-block rounded-md px-2 py-1 text-[14px] font-medium text-accent-ink underline decoration-accent-line underline-offset-[3px] hover:decoration-accent-ink"
           >
             See all prospects
           </Link>
@@ -102,8 +131,8 @@ async function EmptyToday() {
         <>
           <p className="text-[16px] font-medium text-ink">No prospects yet.</p>
           <p className="mx-auto mt-1.5 max-w-[42ch] text-[14px] text-ink-soft">
-            Add the first person you have reached out to. Once a follow-up date arrives, they
-            show up here — and in your daily digest.
+            Add the first person you have reached out to. Once a follow-up date
+            arrives, they show up here — and in your daily digest.
           </p>
           <Link href="/prospects/new" className={`${buttonClasses()} mt-7`}>
             Add your first prospect
