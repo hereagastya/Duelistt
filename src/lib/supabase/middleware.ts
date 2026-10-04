@@ -4,7 +4,31 @@ import { NextResponse, type NextRequest } from "next/server";
 // "/" is the public landing page. The check below is exact-match or a "/x/"
 // prefix, so listing "/" does not make every route public: "/today" is neither
 // equal to "/" nor does it start with "//".
-const PUBLIC_PATHS = ["/", "/login", "/signup", "/auth", "/api/dodo", "/api/cron"];
+const PUBLIC_PATHS = [
+  "/",
+  "/login",
+  "/signup",
+  "/auth",
+  "/api/dodo",
+  "/api/cron",
+  "/icon.png",
+  "/apple-icon.png",
+  "/robots.txt",
+  "/sitemap.xml",
+];
+
+/*
+  The share images must be reachable without a session: what fetches them is
+  WhatsApp's and X's crawlers, which carry no cookies. They were being
+  redirected to /login, so every link preview would have rendered with no
+  image at all.
+
+  These need prefix matching rather than the exact match above, because Next
+  appends a content hash to a metadata image route that lives in a segment
+  with its own metadata: the real path is "/opengraph-image-pwu6ef", and that
+  suffix changes whenever the image does.
+*/
+const PUBLIC_PREFIXES = ["/opengraph-image", "/twitter-image"];
 
 // Signed in, these have nothing to offer: send them to the app instead.
 const SIGNED_IN_REDIRECTS = ["/", "/login", "/signup"];
@@ -46,9 +70,9 @@ export async function updateSession(request: NextRequest) {
   const isSignedIn = Boolean(claimsData?.claims?.sub);
 
   const { pathname } = request.nextUrl;
-  const isPublic = PUBLIC_PATHS.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`),
-  );
+  const isPublic =
+    PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`)) ||
+    PUBLIC_PREFIXES.some((p) => pathname.startsWith(p));
 
   if (!isSignedIn && !isPublic) {
     const url = request.nextUrl.clone();

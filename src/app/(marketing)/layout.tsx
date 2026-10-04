@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -40,6 +41,18 @@ export default function MarketingLayout({
   return (
     <div className="night night-ground grain min-h-dvh text-chalk">
       <div className="relative z-10">{children}</div>
+
+      {/*
+        Scoped to this layout on purpose. The landing page is the only place
+        where the question is "did strangers arrive and did they convert"; the
+        authed app's usage is already answered by the touches table, and
+        measuring signed-in people here would only mean sending their
+        behaviour to a third party for no extra insight.
+
+        Cookieless, so there is nothing to put a consent banner in front of,
+        and it no-ops outside Vercel, so local runs stay clean.
+      */}
+      <Analytics />
     </div>
   );
 }
