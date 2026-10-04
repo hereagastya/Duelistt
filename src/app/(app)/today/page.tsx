@@ -43,7 +43,7 @@ export default async function TodayPage() {
           role="alert"
           className="rounded-lg border border-late/25 bg-late/[0.06] px-4 py-3 text-[14px] text-late"
         >
-          Your follow-ups could not be loaded. Reload the page — if it keeps
+          Your follow-ups could not be loaded. Reload the page. If it keeps
           failing, the database is unreachable.
         </p>
       </>
@@ -132,7 +132,7 @@ async function EmptyToday() {
           <p className="text-[16px] font-medium text-ink">No prospects yet.</p>
           <p className="mx-auto mt-1.5 max-w-[42ch] text-[14px] text-ink-soft">
             Add the first person you have reached out to. Once a follow-up date
-            arrives, they show up here — and in your daily digest.
+            arrives, they show up here, and in your daily digest.
           </p>
           <Link href="/prospects/new" className={`${buttonClasses()} mt-7`}>
             Add your first prospect

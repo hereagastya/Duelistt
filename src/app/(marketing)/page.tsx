@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 import { Cycler } from "@/components/marketing/Cycler";
+import { Ledger, type Entry } from "@/components/marketing/Ledger";
+import { StrikeList } from "@/components/marketing/StrikeList";
 import { Wordmark } from "@/components/marketing/Logo";
 import { Nav } from "@/components/marketing/Nav";
 import { Reveal } from "@/components/marketing/Reveal";
@@ -50,15 +52,20 @@ function Check() {
   );
 }
 
-// The day a follow-up quietly dies. Illustrative, not a customer.
-const SILENCE: { day: string; line: string | null }[] = [
-  { day: "Tue 04", line: "Called Priya. Asked me to try again next week." },
-  { day: "Wed 05", line: null },
-  { day: "Thu 06", line: null },
-  { day: "Fri 07", line: null },
-  { day: "Mon 10", line: "Meant to call. Didn’t." },
-  { day: "Tue 11", line: null },
-  { day: "Wed 12", line: null },
+/*
+  The founder's own lost deal. Only what actually happened is written down; the
+  empty rows are empty because nothing was logged, which is the whole point. No
+  names, dates or figures have been invented to fill them.
+*/
+const SILENCE: Entry[] = [
+  { line: "Sent him the demo." },
+  { line: null },
+  { line: "He called me back. That almost never happens." },
+  { line: null },
+  { line: null },
+  { line: "Meant to follow up. Didn’t." },
+  { line: null },
+  { line: null },
 ];
 
 const REFUSALS = [
@@ -93,7 +100,7 @@ const INCLUDED = [
   "Unlimited prospects and touches",
   "The daily digest, at the hour you pick, in your timezone",
   "Calls, email, DMs and LinkedIn in one queue",
-  "Cancel whenever — your history stays readable",
+  "Cancel whenever. Your history stays readable",
 ];
 
 function Step({
@@ -151,10 +158,9 @@ export default function LandingPage() {
 
           <p className="mx-auto mt-7 max-w-[46rem] text-[16px] leading-[1.7] text-chalk-soft sm:text-[17px]">
             Duelistt is a dead-simple follow-up tracker for anyone doing manual
-            outreach &mdash; cold calls, cold emails, DMs, LinkedIn. Log who you
-            talked to, what happened, and when to follow up. Duelistt tells you
-            exactly who&rsquo;s due today, so nobody goes quiet on you by
-            accident.
+            outreach: cold calls, cold emails, DMs, LinkedIn. Log who you talked
+            to, what happened, and when to follow up. Duelistt tells you exactly
+            who&rsquo;s due today, so nobody goes quiet on you by accident.
           </p>
 
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
@@ -192,45 +198,19 @@ export default function LandingPage() {
               Nobody decides to go quiet.
             </h2>
             <p className="mt-5 max-w-[26rem] text-[16px] leading-[1.7] text-chalk-soft">
-              It just happens. A good call, a vague &ldquo;next week&rdquo;, and
-              then a week that looks like every other week.
+              This is the deal that made me build Duelistt. A cold prospect
+              called me back, which almost never happens, and then I let the
+              days do what days do.
             </p>
 
             <p className="mt-10 max-w-[22rem] text-[1.5rem] leading-[1.25] font-medium tracking-[-0.03em] text-balance sm:text-[1.75rem]">
-              Three weeks later, she signed with someone else.
+              I lost the deal.
             </p>
           </Reveal>
 
           <Reveal delay={90}>
             <div className="panel rounded-2xl px-5 py-3 sm:px-7 sm:py-5">
-              <ol>
-                {SILENCE.map((entry, i) => (
-                  <li
-                    key={entry.day}
-                    className={`flex items-baseline gap-6 py-3.5 ${
-                      i !== SILENCE.length - 1
-                        ? "border-b border-white/[0.06]"
-                        : ""
-                    }`}
-                  >
-                    <span className="tnum w-[4.5rem] shrink-0 text-[13px] text-chalk-faint">
-                      {entry.day}
-                    </span>
-                    {entry.line ? (
-                      <span className="text-[15px] text-chalk-soft">
-                        {entry.line}
-                      </span>
-                    ) : (
-                      <span
-                        aria-label="nothing logged"
-                        className="text-[15px] text-white/[0.14]"
-                      >
-                        &mdash;
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ol>
+              <Ledger entries={SILENCE} />
             </div>
           </Reveal>
         </div>
@@ -253,14 +233,14 @@ export default function LandingPage() {
         <div className={SHELL}>
           <Step
             title="Log the touch."
-            body="Ten seconds after the call. What happened, and when to try again. Pick a channel, pick an outcome, and you are done — there is no record to fill in afterwards, and no fields anyone made you add."
+            body="Ten seconds after the call. What happened, and when to try again. Pick a channel, pick an outcome, and you are done. There is no record to fill in afterwards, and no fields anyone made you add."
             visual={<LogVisual />}
           />
 
           <Step
             flip
             title="Get the nag."
-            body="One email, at the hour you choose, in your timezone. Just the people who are due, oldest first, with the last thing you wrote about them. Nothing due that day means no email at all — so when one arrives, it means something."
+            body="One email, at the hour you choose, in your timezone. Just the people who are due, oldest first, with the last thing you wrote about them. Nothing due that day means no email at all, so when one arrives, it means something."
             visual={<DigestVisual />}
           />
 
@@ -280,18 +260,7 @@ export default function LandingPage() {
             What it refuses to be.
           </h2>
 
-          <ul className="mt-9 flex max-w-[50rem] flex-wrap gap-x-7 gap-y-3">
-            {REFUSALS.map((item) => (
-              <li
-                key={item}
-                // Hovering one brightens it and turns its strike amber: the
-                // thing you thought you wanted, crossed out on purpose.
-                className="cursor-default text-[1.3rem] text-chalk-faint/70 line-through decoration-white/20 decoration-2 transition-colors duration-200 hover:text-chalk-soft hover:decoration-ember/70 sm:text-[1.55rem]"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
+          <StrikeList items={REFUSALS} />
         </Reveal>
 
         <Reveal delay={90}>
@@ -375,17 +344,17 @@ export default function LandingPage() {
 
           <Reveal delay={90}>
             <p className="max-w-[38rem] text-[17px] leading-[1.7] text-chalk-soft">
-              Duelistt is built for someone doing outreach by hand &mdash; in
-              their own inbox, on their own phone, in their own LinkedIn. It
-              never sends anything for you and never plugs into those channels.
-              It is the record and the reminder beside them.
+              Duelistt is built for someone doing outreach by hand: in their own
+              inbox, on their own phone, in their own LinkedIn. It never sends
+              anything for you and never plugs into those channels. It is the
+              record and the reminder beside them.
             </p>
             <p className="mt-5 max-w-[38rem] text-[17px] leading-[1.7] text-chalk-soft">
               That is also why it stays small. Every field you have to fill in
               is a reason to stop logging, and a log you stop keeping is worse
-              than no log at all. So there are two things to write down &mdash;
-              what happened, and when to try again &mdash; and one screen that
-              tells you who is waiting.
+              than no log at all. So there are two things to write down, what
+              happened and when to try again, and one screen that tells you who
+              is waiting.
             </p>
 
             <dl className="mt-10 max-w-[38rem]">

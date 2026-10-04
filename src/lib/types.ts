@@ -46,8 +46,8 @@ export const STATUS_LABELS: Record<ProspectStatus, string> = {
 
 export const OUTCOME_LABELS: Record<TouchOutcome, string> = {
   no_answer: "No answer",
-  answered_not_interested: "Answered — not interested",
-  answered_interested: "Answered — interested",
+  answered_not_interested: "Answered, not interested",
+  answered_interested: "Answered, interested",
   callback_requested: "Callback requested",
   voicemail: "Left voicemail",
   sent: "Sent",

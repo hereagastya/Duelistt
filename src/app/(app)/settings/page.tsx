@@ -33,7 +33,7 @@ export default async function SettingsPage() {
 
   const subscriptionLine = access.allowed
     ? access.reason === "trialing"
-      ? `Trial — ${access.trialDaysLeft} ${access.trialDaysLeft === 1 ? "day" : "days"} left`
+      ? `Trial: ${access.trialDaysLeft} ${access.trialDaysLeft === 1 ? "day" : "days"} left`
       : "Active"
     : access.reason === "trial_expired"
       ? "Trial ended"

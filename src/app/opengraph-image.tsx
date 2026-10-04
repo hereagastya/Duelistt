@@ -15,7 +15,7 @@ import { ImageResponse } from "next/og";
 */
 
 export const alt =
-  "Duelistt — you didn't lose the deal, you forgot to call back";
+  "Duelistt: you didn't lose the deal, you forgot to call back";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

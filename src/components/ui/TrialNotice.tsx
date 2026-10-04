@@ -10,7 +10,7 @@ export function TrialNotice({ access }: { access: Access }) {
 
   const message = access.allowed
     ? `Trial ends in ${access.trialDaysLeft} ${access.trialDaysLeft === 1 ? "day" : "days"}.`
-    : "Your trial has ended. Your history is safe — subscribe to log new touches.";
+    : "Your trial has ended. Your history is safe. Subscribe to log new touches.";
 
   return (
     <div className="border-b border-accent-line/60 bg-accent-wash">

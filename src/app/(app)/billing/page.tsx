@@ -38,7 +38,7 @@ export default async function BillingPage() {
           <div className="min-w-0">
             {access.allowed && access.reason === "trialing" ? (
               <p className="text-[15px] text-ink">
-                You are on the free trial —{" "}
+                You are on the free trial.{" "}
                 <span className="tnum font-medium">
                   {access.trialDaysLeft} {access.trialDaysLeft === 1 ? "day" : "days"}
                 </span>{" "}

@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   // The root template appends "· Duelistt"; this page already says it.
-  title: { absolute: "Duelistt — the follow-up tracker for manual outreach" },
+  title: { absolute: "Duelistt: the follow-up tracker for manual outreach" },
   description:
     "A dead-simple follow-up tracker for cold calls, emails, DMs and LinkedIn. Log who you talked to, what happened, and when to follow up. Duelistt tells you exactly who is due today.",
   openGraph: {
-    title: "Duelistt — you didn't lose the deal, you forgot to call back",
+    title: "Duelistt: you didn't lose the deal, you forgot to call back",
     description:
       "A dead-simple follow-up tracker for manual outreach. Not a CRM: no pipelines, no deal stages, no dashboard to babysit.",
     url: "https://www.duelistt.com",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   // as a thumbnail beside the text.
   twitter: {
     card: "summary_large_image",
-    title: "Duelistt — you didn't lose the deal, you forgot to call back",
+    title: "Duelistt: you didn't lose the deal, you forgot to call back",
     description:
       "A dead-simple follow-up tracker for manual outreach. Not a CRM: no pipelines, no deal stages, no dashboard to babysit.",
   },

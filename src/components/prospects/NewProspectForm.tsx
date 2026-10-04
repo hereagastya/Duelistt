@@ -105,7 +105,7 @@ export function NewProspectForm({
         <div className="mb-4">
           <h2 className="text-[14px] font-medium text-ink">The first touch</h2>
           <p className="mt-0.5 text-[13px] text-ink-faint">
-            You have already contacted them — this records it.
+            You have already contacted them, so this records it.
           </p>
         </div>
 

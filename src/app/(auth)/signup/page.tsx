@@ -1,30 +1,31 @@
 import Link from "next/link";
 
+import { AuthCard } from "@/components/auth/AuthCard";
+
 import { SignUpForm } from "./SignUpForm";
 
 export const metadata = { title: "Start a trial" };
 
 export default function SignUpPage() {
   return (
-    <>
-      <div className="rounded-xl border border-rule bg-surface p-6 shadow-sm">
-        <h1 className="text-[17px] font-semibold tracking-[-0.02em] text-ink">
-          Start your free trial
-        </h1>
-        <div className="mt-5">
-          <SignUpForm />
-        </div>
-      </div>
-
-      <p className="mt-5 text-center text-[14px] text-ink-soft">
-        Already have an account?{" "}
-        <Link
-          href="/login"
-          className="font-medium text-accent-ink underline decoration-accent-line underline-offset-[3px] hover:decoration-accent-ink"
-        >
-          Sign in
-        </Link>
-      </p>
-    </>
+    <AuthCard
+      title="Start your free trial"
+      subtitle="Seven days, no card. Log your first follow-up in under a minute."
+      googleLabel="Sign up with Google"
+      googleNext="/today"
+      footer={
+        <>
+          Already have an account?{" "}
+          <Link
+            href="/login"
+            className="font-medium text-accent-ink underline decoration-accent-line underline-offset-[3px] hover:decoration-accent-ink"
+          >
+            Sign in
+          </Link>
+        </>
+      }
+    >
+      <SignUpForm />
+    </AuthCard>
   );
 }

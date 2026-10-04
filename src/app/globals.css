@@ -521,6 +521,98 @@
   }
 
   /*
+    The nav's frost, generalised. `.frost` is the same recipe at a lower dose:
+    blurred backdrop, a grain film and a corner sheen, but sitting on a real
+    surface colour so it works on a card that has text in it.
+
+    It themes itself, so the auth card gets frosted glass at night and plain
+    paper by day, where frosting near-white would just look like dirt.
+  */
+  .frost {
+    position: relative;
+    isolation: isolate;
+    background: color-mix(in oklab, var(--color-surface) 72%, transparent);
+    -webkit-backdrop-filter: blur(26px) saturate(165%);
+    backdrop-filter: blur(26px) saturate(165%);
+    box-shadow:
+      inset 0 1px 0 0 oklch(100% 0 0 / 0.07),
+      var(--shadow-md);
+  }
+
+  .frost::before,
+  .frost::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .frost::before {
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23f)' opacity='0.55'/%3E%3C/svg%3E");
+  }
+
+  .frost::after {
+    background: linear-gradient(
+      118deg,
+      oklch(100% 0 0 / 0.07) 0%,
+      oklch(100% 0 0 / 0.015) 24%,
+      transparent 50%
+    );
+  }
+
+  /* On paper the grain reads as grime, and there is nothing behind to blur. */
+  :root[data-theme="light"] .frost {
+    background: var(--color-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: var(--shadow-md);
+  }
+
+  :root[data-theme="light"] .frost::before,
+  :root[data-theme="light"] .frost::after {
+    display: none;
+  }
+
+  /*
+    The landing page's panels, frosted. They are already dark and lifted, so
+    this only adds the film and the corner light that the nav has, which is what
+    ties the whole page to it.
+  */
+  .panel {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .panel::before,
+  .panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .panel::before {
+    opacity: 0.42;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23p)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  .panel::after {
+    background: linear-gradient(
+      124deg,
+      oklch(100% 0 0 / 0.055) 0%,
+      oklch(100% 0 0 / 0.012) 28%,
+      transparent 56%
+    );
+  }
+
+  /*
     An in-page link that teleports is a link people do not trust. Scoped to the
     document that actually scrolls, and only when the landing page is the one
     mounted -- the authed app keeps its instant scroll restoration.
@@ -573,6 +665,26 @@
 
   .pulse-soft {
     animation: pulse-soft 2.6s ease-in-out infinite;
+  }
+
+  /*
+    The lateness bars fill rather than appear. Days accumulating is the thing
+    the product is about, so the one bar that is nearly full should be seen
+    getting there. `--meter` carries each row's own width.
+  */
+  @keyframes fill-meter {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  .meter {
+    width: var(--meter);
+    transform-origin: left;
+    animation: fill-meter 1100ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   @media (prefers-reduced-motion: reduce) {

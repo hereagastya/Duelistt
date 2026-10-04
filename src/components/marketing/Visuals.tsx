@@ -93,9 +93,10 @@ export function QueueVisual() {
                 {/* The bar is how long they have been waiting, not a progress meter. */}
                 <span className="mt-2 block h-[3px] w-full overflow-hidden rounded-full bg-white/[0.06]">
                   <span
-                    className="block h-full rounded-full"
+                    className="meter block h-full rounded-full"
                     style={{
-                      width: `${row.meter}%`,
+                      ["--meter" as string]: `${row.meter}%`,
+                      animationDelay: `${320 + i * 110}ms`,
                       background: row.live
                         ? "linear-gradient(90deg, oklch(70% 0.15 62), oklch(80% 0.15 72))"
                         : "oklch(100% 0 0 / 0.18)",
