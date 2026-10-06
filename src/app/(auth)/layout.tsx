@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import Link from "next/link";
 
 import { Logo } from "@/components/marketing/Logo";
@@ -25,6 +26,21 @@ export default function AuthLayout({
 
         {children}
       </div>
+
+      {/*
+        /login and /signup are the far end of the acquisition funnel, so they
+        are measured alongside the landing page: a visit to /signup against a
+        visit to / is the conversion rate.
+
+        Still deliberately not in the root layout. Everything past this point
+        is signed in, and that behaviour is already in the touches table.
+
+        Pageviews only. Custom events (a CTA click, a completed signup) are a
+        Pro feature, and this project is on Hobby -- so the conversion rate is
+        read as /signup views against / views, not as a tracked funnel. Do not
+        add track() calls here expecting them to record.
+      */}
+      <Analytics />
     </main>
   );
 }

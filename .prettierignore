@@ -1,0 +1,8 @@
+# Prettier has no SQL parser, so it exits non-zero on these rather than
+# skipping them. The queries are hand-formatted and meant to be read.
+*.sql
+
+# Generated or vendored.
+.next
+node_modules
+package-lock.json
