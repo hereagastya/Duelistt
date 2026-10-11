@@ -16,7 +16,12 @@ import { ImageResponse } from "next/og";
 
 export const alt =
   "Duelistt: you didn't lose the deal, you forgot to call back";
-export const size = { width: 1200, height: 630 };
+/*
+  1200x628, which is X's stated size for summary_large_image. 1200x630 is the
+  Open Graph convention and both render fine in practice, but matching X's own
+  number exactly removes a variable from a card that was not appearing.
+*/
+export const size = { width: 1200, height: 628 };
 export const contentType = "image/png";
 
 const NIGHT = "#17120d";
