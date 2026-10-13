@@ -20,7 +20,13 @@ import {
 export const metadata = { title: "All prospects" };
 export const dynamic = "force-dynamic";
 
-type Search = { status?: string; channel?: string; q?: string };
+type Search = {
+  status?: string;
+  channel?: string;
+  q?: string;
+  deleted?: string;
+  error?: string;
+};
 
 export default async function ProspectsPage({
   searchParams,
@@ -28,7 +34,7 @@ export default async function ProspectsPage({
   searchParams: Promise<Search>;
 }) {
   const { profile } = await requireProfile();
-  const { status, channel, q } = await searchParams;
+  const { status, channel, q, deleted, error: flash } = await searchParams;
   const today = todayIn(profile.timezone);
 
   const supabase = await createClient();
@@ -70,6 +76,26 @@ export default async function ProspectsPage({
           </Link>
         }
       />
+
+      {/* A row vanishing with no acknowledgement reads as a glitch, so the
+          delete says so once and the message does not persist on reload. */}
+      {deleted === "1" && (
+        <p
+          role="status"
+          className="mb-4 rounded-lg border border-accent-line bg-accent-wash px-4 py-2.5 text-[14px] text-ink"
+        >
+          Prospect deleted, along with its history.
+        </p>
+      )}
+
+      {flash === "delete_failed" && (
+        <p
+          role="alert"
+          className="mb-4 rounded-lg border border-late/25 bg-late/[0.06] px-4 py-2.5 text-[14px] text-late"
+        >
+          That prospect could not be deleted. Try again.
+        </p>
+      )}
 
       <Suspense fallback={<div className="h-[5.5rem]" />}>
         <ProspectFilters total={prospects.length} />

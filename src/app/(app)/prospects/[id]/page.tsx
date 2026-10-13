@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { DeleteProspect } from "@/components/prospects/DeleteProspect";
 import { LogTouchButton } from "@/components/prospects/LogTouchButton";
 import { StatusTag } from "@/components/prospects/StatusTag";
 import { ChannelIcon } from "@/components/ui/ChannelIcon";
@@ -89,16 +90,25 @@ export default async function ProspectDetailPage({
             </p>
           </div>
 
-          <LogTouchButton
-            prospect={{
-              id: prospect.id,
-              name: prospect.name,
-              channel: prospect.channel,
-            }}
-            today={today}
-            timezone={profile.timezone}
-            defaultInterval={profile.default_follow_up_interval}
-          />
+          {/* Log is the action; delete sits beside it as a quiet one, because
+              it is the thing you do once and the thing you cannot undo. */}
+          <div className="flex items-center gap-1">
+            <DeleteProspect
+              id={prospect.id}
+              name={prospect.name}
+              touchCount={touches?.length ?? 0}
+            />
+            <LogTouchButton
+              prospect={{
+                id: prospect.id,
+                name: prospect.name,
+                channel: prospect.channel,
+              }}
+              today={today}
+              timezone={profile.timezone}
+              defaultInterval={profile.default_follow_up_interval}
+            />
+          </div>
         </div>
       </div>
 

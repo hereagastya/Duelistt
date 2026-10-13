@@ -41,9 +41,11 @@ export async function createProspect(
   const touchDate = todayIn(profile.timezone);
 
   if (!name) return { error: "Enter a name." };
-  if (!contactInfo) return { error: "Enter an email, phone number, or handle." };
+  if (!contactInfo)
+    return { error: "Enter an email, phone number, or handle." };
   if (!CHANNELS.includes(channel)) return { error: "Choose a channel." };
-  if (!TOUCH_OUTCOMES.includes(outcome)) return { error: "Choose what happened." };
+  if (!TOUCH_OUTCOMES.includes(outcome))
+    return { error: "Choose what happened." };
   if (!/^\d{4}-\d{2}-\d{2}$/.test(followUpDate)) {
     return { error: "Pick a follow-up date." };
   }
@@ -86,4 +88,39 @@ export async function createProspect(
   revalidatePath("/today");
   revalidatePath("/prospects");
   redirect("/today");
+}
+
+/**
+ * Deletes a prospect and, by the foreign key's cascade, every touch logged
+ * against it. There is no soft delete and no undo: the table is small, the
+ * record is one person's own notes, and a "deleted" flag every query would
+ * have to remember to filter is a bug waiting to happen.
+ *
+ * `.eq("id", id)` is the only filter needed -- RLS scopes the statement to the
+ * caller's own rows, so another user's id simply matches nothing. The explicit
+ * user_id check is there anyway, because a delete is the one place where a
+ * policy regression should fail closed rather than quietly succeed.
+ */
+export async function deleteProspect(formData: FormData) {
+  const { userId } = await requireProfile();
+
+  const id = String(formData.get("id") ?? "");
+  if (!/^[0-9a-f-]{36}$/i.test(id)) {
+    redirect("/prospects?error=bad_id");
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("prospects")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", userId);
+
+  if (error) {
+    redirect(`/prospects/${id}?error=delete_failed`);
+  }
+
+  revalidatePath("/today");
+  revalidatePath("/prospects");
+  redirect("/prospects?deleted=1");
 }
