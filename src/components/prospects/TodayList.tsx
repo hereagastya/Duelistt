@@ -6,6 +6,7 @@ import { useState } from "react";
 import { LogTouchModal } from "@/components/touches/LogTouchModal";
 import { ChannelIcon } from "@/components/ui/ChannelIcon";
 import { daysBetween, overdueLabel } from "@/lib/date";
+import { lastTouch, lastTouchLine } from "@/lib/lastTouch";
 import { CHANNEL_LABELS, type DueProspect } from "@/lib/types";
 
 type Props = {
@@ -32,6 +33,15 @@ export function TodayList({
             ? daysBetween(p.next_follow_up_date, today)
             : 0;
 
+          // What happened last time, in the same words the digest used. Until
+          // there is a history, the row falls back to how to reach them, which
+          // is the only other thing worth knowing at a glance.
+          const touch = lastTouch(p, timezone);
+          const subtitle =
+            touch === null
+              ? `${CHANNEL_LABELS[p.channel]} · ${p.contact_info}`
+              : `Last: ${lastTouchLine(touch, touch.note)}`;
+
           return (
             <li key={p.id} className="px-3">
               <div className="row-live group -mx-3 flex items-center gap-3 rounded-lg px-3 py-3">
@@ -48,9 +58,14 @@ export function TodayList({
                     <span className="block truncate text-[15px] font-medium text-ink">
                       {p.name}
                     </span>
-                    <span className="mt-0.5 block truncate text-[13px] text-ink-soft">
-                      {p.last_note ??
-                        `${CHANNEL_LABELS[p.channel]} · ${p.contact_info}`}
+                    {/* One line, clipped rather than wrapped: a long note must
+                        not push the next name down the screen. The full text is
+                        on the title, and on the prospect's own page. */}
+                    <span
+                      title={touch?.note ?? undefined}
+                      className="mt-0.5 block truncate text-[13px] text-ink-soft"
+                    >
+                      {subtitle}
                     </span>
                   </span>
                 </button>

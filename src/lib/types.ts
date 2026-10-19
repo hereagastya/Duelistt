@@ -106,8 +106,12 @@ export type Profile = {
   updated_at: string;
 };
 
-// A Today-view row: the prospect plus the note from its most recent touch.
+// A Today-view row: the prospect plus its most recent touch, flattened on by
+// the prospect_list view. The four last_* columns are null together when the
+// person has no history at all, because the view LEFT JOINs to get them.
 export type DueProspect = Prospect & {
   last_note: string | null;
   last_touch_date: string | null;
+  last_channel: Channel | null;
+  last_outcome: TouchOutcome | null;
 };

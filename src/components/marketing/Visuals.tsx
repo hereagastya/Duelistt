@@ -1,4 +1,5 @@
 import { ChannelIcon } from "@/components/ui/ChannelIcon";
+import { lastTouchLine, type LastTouch } from "@/lib/lastTouch";
 import type { Channel } from "@/lib/types";
 
 /*
@@ -35,12 +36,52 @@ type Row = {
   label: string;
   meter: number;
   live?: boolean;
+  /*
+    Sample data, written as the shape the product actually returns so the
+    composed line below goes through the same formatter the email does. Spelling
+    it out as a finished string here would let the demo drift from the real one.
+  */
+  last?: LastTouch;
 };
 
 const QUEUE: Row[] = [
-  { name: "Priya R.", channel: "email", label: "9d", meter: 92, live: true },
-  { name: "Daniel O.", channel: "call", label: "4d", meter: 48 },
-  { name: "Mei S.", channel: "linkedin", label: "2d", meter: 26 },
+  {
+    name: "Priya R.",
+    channel: "email",
+    label: "9d",
+    meter: 92,
+    live: true,
+    last: {
+      channel: "Email",
+      outcome: "They replied",
+      note: "asked for pricing, call thursday",
+      when: "9 days ago",
+    },
+  },
+  {
+    name: "Daniel O.",
+    channel: "call",
+    label: "4d",
+    meter: 48,
+    last: {
+      channel: "Call",
+      outcome: "No answer",
+      note: "left voicemail, said he travels mondays",
+      when: "4 days ago",
+    },
+  },
+  {
+    name: "Mei S.",
+    channel: "linkedin",
+    label: "2d",
+    meter: 26,
+    last: {
+      channel: "LinkedIn",
+      outcome: "Sent",
+      note: null,
+      when: "2 days ago",
+    },
+  },
   { name: "Tomás H.", channel: "call", label: "today", meter: 8 },
 ];
 
@@ -236,18 +277,28 @@ export function DigestVisual() {
           </p>
           <p className="mt-1.5 text-[13px] text-chalk-faint">Oldest first.</p>
 
-          <div className="mt-5 space-y-3">
+          <div className="mt-5 space-y-4">
             {QUEUE.slice(0, 3).map((row) => (
-              <div key={row.name} className="flex items-baseline gap-3">
-                <span className="text-[14px] font-medium text-chalk">
-                  {row.name}
-                </span>
-                <span className="h-px flex-1 bg-white/[0.08]" />
-                <span
-                  className={`tnum text-[12px] ${row.live ? "text-ember" : "text-chalk-faint"}`}
-                >
-                  {row.label} late
-                </span>
+              <div key={row.name}>
+                <div className="flex items-baseline gap-3">
+                  <span className="text-[14px] font-medium text-chalk">
+                    {row.name}
+                  </span>
+                  <span className="h-px flex-1 bg-white/[0.08]" />
+                  <span
+                    className={`tnum shrink-0 text-[12px] ${row.live ? "text-ember" : "text-chalk-faint"}`}
+                  >
+                    {row.label} late
+                  </span>
+                </div>
+
+                {/* The reason the email is worth opening: what they said last
+                    time, so the follow-up has somewhere to start. */}
+                {row.last && (
+                  <p className="mt-1 truncate text-[12px] text-chalk-faint">
+                    Last: {lastTouchLine(row.last, row.last.note)}
+                  </p>
+                )}
               </div>
             ))}
           </div>

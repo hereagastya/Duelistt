@@ -1,13 +1,18 @@
 import "server-only";
 
-export type DigestRow = {
+import {
+  lastTouch,
+  lastTouchLine,
+  type LastTouchColumns,
+} from "@/lib/lastTouch";
+
+export type DigestRow = LastTouchColumns & {
   user_id: string;
   email: string;
   timezone: string;
   prospect_name: string;
   next_follow_up_date: string;
   days_overdue: number;
-  last_note: string | null;
 };
 
 export type Digest = {
@@ -51,9 +56,13 @@ export function digestSubject(items: DigestRow[]): string {
 }
 
 export function digestText(items: DigestRow[], todayUrl: string): string {
-  const lines = items.map((i) => {
-    const note = i.last_note ? ` - ${i.last_note}` : "";
-    return `- ${i.prospect_name} (${lateLabel(i.days_overdue)})${note}`;
+  // Two lines per person rather than one run-on: the name and how late they
+  // are stays scannable, the history sits indented underneath it.
+  const lines = items.flatMap((i) => {
+    const name = `- ${i.prospect_name} (${lateLabel(i.days_overdue)})`;
+    const touch = lastTouch(i, i.timezone);
+    if (touch === null) return [name];
+    return [name, `    Last: ${lastTouchLine(touch, touch.note)}`];
   });
 
   return [digestSubject(items), "", ...lines, "", `Open your list: ${todayUrl}`].join("\n");
@@ -64,16 +73,25 @@ export function digestHtml(items: DigestRow[], todayUrl: string): string {
   // implement flex or grid reliably.
   const rows = items
     .map((i) => {
-      const note = i.last_note
-        ? `<div style="color:#6b625a;font-size:14px;margin-top:2px">${escapeHtml(i.last_note)}</div>`
-        : "";
+      // What happened last time, so the follow-up continues the conversation
+      // instead of opening with "just checking in". The note is user input on
+      // its way into an email and is escaped; the channel, outcome and
+      // relative date come from enums and integers and cannot carry markup.
+      const touch = lastTouch(i, i.timezone);
+      const last =
+        touch === null
+          ? ""
+          : `<div style="color:#6b625a;font-size:13px;line-height:1.5;margin-top:3px">Last: ${lastTouchLine(
+              touch,
+              touch.note === null ? null : escapeHtml(touch.note),
+            )}</div>`;
       const late = i.days_overdue >= 7 ? "#b4451f" : "#6b625a";
 
       return `
         <tr>
           <td style="padding:12px 0;border-bottom:1px solid #e3ded7">
             <div style="font-size:15px;font-weight:600;color:#2e2721">${escapeHtml(i.prospect_name)}</div>
-            ${note}
+            ${last}
           </td>
           <td style="padding:12px 0;border-bottom:1px solid #e3ded7;text-align:right;white-space:nowrap;vertical-align:top">
             <span style="font-size:13px;color:${late}">${lateLabel(i.days_overdue)}</span>
